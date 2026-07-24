@@ -1,0 +1,14 @@
+a = semester
+b = tahun_ajaran
+c = program_studi
+d = fakultas
+e = matakuliah
+f = kurikulum
+g = hari
+h = jam
+i = ruangan
+j = jadwal
+k = dosen
+l = mahasiswa
+m = kehadiran dosen
+n = kehadiran mahasiswa

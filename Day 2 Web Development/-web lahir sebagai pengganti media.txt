@@ -1,0 +1,31 @@
+-web lahir sebagai pengganti media informasi.
+-frontend dan backend sebagai fondasi.
+
+Frontend
+-html, css, javascript.
+-html sebagai kerangka
+-css bukanlah bahasa pemrograman karena tidak mempunyai fungsi logika
+-java script sebagai otak dari website.
+
+
+Backend
+php, MySQL, API
+
+backend + frontend + API =Team
+request > api > backend (database, validasi, dll)
+
+framework 
+	Membantu dalam pengembagan agar tidak usah membangun dari 0, = bootstrap, Laravel, tailwind
+	react bukanlah framework melainkan library
+	css native vs bootsrap
+dom elemen pada js
+Laravel telah disediakan suatu konstruktor untuk membangun dapur, telah menyediakan auth, 
+kelebihan Laravel, cepat, orm, sehingga kamu tidak perlu membuat semuanya dari awal.
+
+apa itu html sematik
+SEO agar mendaoatkan urutan paling atas saat disearch
+
+CSS
+Urutan priorotas inline, internal, id, class, tag, universal
+
+Tailwind
