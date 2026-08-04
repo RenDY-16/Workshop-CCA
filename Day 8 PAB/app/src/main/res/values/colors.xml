@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cyber Gaming Palette -->
+    <color name="primary">#00E5FF</color> <!-- Neon Cyan -->
+    <color name="primary_variant">#00B8D4</color>
+    <color name="on_primary">#000000</color>
+
+    <color name="secondary">#FFD600</color> <!-- Gold -->
+    <color name="secondary_variant">#FFAB00</color>
+    <color name="on_secondary">#000000</color>
+
+    <color name="background">#050505</color> <!-- Deep Black -->
+    <color name="surface">#121212</color> <!-- Dark Surface -->
+    <color name="surface_variant">#1E1E1E</color>
+
+    <color name="on_surface">#FFFFFF</color>
+    <color name="on_background">#E0E0E0</color>
+
+    <color name="accent_blue">#2979FF</color>
+    <color name="accent_gold">#FFD700</color>
+
+    <color name="glass_white">#12FFFFFF</color>
+    <color name="glass_white_border">#20FFFFFF</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

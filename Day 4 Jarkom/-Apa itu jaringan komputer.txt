@@ -1,0 +1,8 @@
+-Apa itu jaringan komputer?
+	Beberapa komputer yang terpisah tetapi saling terhubung melakukan perkerjaan sistem ini disebut jaringan komputer
+
+-Model komunikasi jaringan
+	Sistem Sumber > Media transmisi > Sistem tujuan
+	Media Transmisi Wireless
+ 	Klasifikasi ukuran interkoneksi
+-Jenis topologi jaringan

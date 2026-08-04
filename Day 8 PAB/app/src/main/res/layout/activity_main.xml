@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true">
+
+    <!-- Cyber Background Decoration -->
+    <View
+        android:id="@+id/bg_glow"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:background="@drawable/bg_header_gradient"
+        android:rotation="45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-200dp"
+        android:layout_marginEnd="-150dp" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:scrollbarSize="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingBottom="80dp">
+
+            <!-- Title Typography -->
+
+            <!-- 4D PRO CARD -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="-0.03"
+                android:lineSpacingExtra="-8dp"
+                android:text="PRO\nATLIT"
+                android:textColor="@color/white"
+                android:textSize="48sp" />
+
+            <FrameLayout
+                android:id="@+id/card_container"
+                android:layout_width="match_parent"
+                android:layout_height="420dp"
+                android:layout_marginTop="32dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <!-- Layer 0: Shadow -->
+                <View
+                    android:id="@+id/layer_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_portfolio_shadow"
+                    android:alpha="0.4" />
+
+                <!-- Layer 1: Main Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/main_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1.5dp"
+                    app:strokeColor="@color/glass_white_border"
+                    app:cardBackgroundColor="@color/surface">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!-- Layer 2: Player Image -->
+                        <ImageView
+                            android:id="@+id/layer_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/foto_rendy1"
+                            android:alpha="1.0" />
+
+                        <!-- Overlay for better text legibility -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_header_gradient"
+                            android:rotation="180"
+                            android:alpha="0.4" />
+
+                        <!-- Layer 3: Floating Stats -->
+
+                        <LinearLayout
+                            android:id="@+id/layer_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="28dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/name"
+                                android:textColor="@color/primary"
+                                android:textSize="42sp"
+                                android:fontFamily="sans-serif-black" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/full_name"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:letterSpacing="0.1"
+                                android:alpha="0.7"/>
+
+                            <View
+                                android:layout_width="40dp"
+                                android:layout_height="3dp"
+                                android:layout_marginTop="12dp"
+                                android:background="@color/secondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/role"
+                                android:textColor="@color/secondary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
+
+            <!-- Biography (Glass) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_glass_card"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_me_title"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/about_me_desc"
+                    android:textColor="@color/on_background"
+                    android:textSize="14sp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:alpha="0.8"/>
+            </LinearLayout>
+
+            <!-- Achievements (Cards) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/achievement_title"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacing="10dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ach_1"
+                        app:chipBackgroundColor="@color/surface"
+                        app:chipStrokeColor="@color/secondary"
+                        app:chipStrokeWidth="1dp"
+                        android:textColor="@color/white"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ach_2"
+                        app:chipBackgroundColor="@color/surface"
+                        app:chipStrokeColor="@color/secondary"
+                        app:chipStrokeWidth="1dp"
+                        android:textColor="@color/white"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ach_3"
+                        app:chipBackgroundColor="@color/surface"
+                        app:chipStrokeColor="@color/primary"
+                        app:chipStrokeWidth="1dp"
+                        android:textColor="@color/white"/>
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+
+            <!-- Action Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_contact"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="40dp"
+                android:text="@string/btn_contact"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/on_primary"
+                app:elevation="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

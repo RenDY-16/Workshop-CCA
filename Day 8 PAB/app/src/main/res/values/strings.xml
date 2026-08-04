@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RenDY Portfolio</string>
+    <string name="name">RenDY</string>
+    <string name="full_name">Rendi Pratama</string>
+    <string name="title">Pemain Pro Free Fire</string>
+    <string name="role">Primary Rusher / Attacker</string>
+    <string name="team_current">Ex-Dewa United / Galaxio</string>
+    <string name="about_me_title">Profil Pro</string>
+    <string name="about_me_desc">Atlit Free Fire profesional dari Indonesia. Dikenal dengan gaya permainan agresif dan keahlian rusher yang luar biasa. Berkompetisi di level tertinggi di FFML Divisi 1.</string>
+    <string name="skills_title">Statistik &amp; Penguasaan</string>
+    <string name="skill_1">Logika Rusher</string>
+    <string name="skill_2">Pertarungan Jarak Dekat</string>
+    <string name="skill_3">Berpengalaman FFML</string>
+    <string name="achievement_title">Pencapaian Tertinggi</string>
+    <string name="ach_1">3rd Piala Presiden 2022</string>
+    <string name="ach_2">3rd UPoint Season 9</string>
+    <string name="ach_3">Veteran FFML Div 1</string>
+    <string name="btn_contact">KOLABORASI SEKARANG</string>
+</resources>
