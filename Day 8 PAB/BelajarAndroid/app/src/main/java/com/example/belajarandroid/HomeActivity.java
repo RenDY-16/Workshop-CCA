@@ -2,6 +2,7 @@ package com.example.belajarandroid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -31,5 +32,12 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btnCam.setOnClickListener(v -> {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivity(cameraIntent);
+        });
+
+
     }
 }
