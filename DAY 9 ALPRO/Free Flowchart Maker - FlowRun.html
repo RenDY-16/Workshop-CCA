@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)https://flowrun.io/scratchpad -->
+<html lang="en" data-theme="dark"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="hepek"><meta name="theme-color" content="#000"><meta name="mobile-web-app-capable" content="yes"><meta property="og:title" content="FlowRun"><meta name="twitter:card" content="summary_large_image"><link rel="shortcut icon" href="https://flowrun.io/images/logo_black.svg" type="image/svg+xml"><link rel="manifest" href="https://flowrun.io/manifest"><link rel="apple-touch-icon" href="https://flowrun.io/images/logo_black_192.png"><link rel="preload" href="https://flowrun.io/fonts/Poppins-Regular.ttf" as="font" type="font/ttf" crossorigin=""><link rel="preload" href="https://flowrun.io/fonts/Poppins-Bold.ttf" as="font" type="font/ttf" crossorigin=""><link rel="preload" href="https://flowrun.io/fonts/FiraMono-Regular.woff" as="font" type="font/woff2" crossorigin=""><link rel="preload" href="https://flowrun.io/fonts/FiraMono-Bold.woff" as="font" type="font/woff2" crossorigin=""><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/pico.conditional.amber.min.css"><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/toastify.min.css"><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/prism.css"><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/flowrun.css"><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/main.css"><link rel="stylesheet" href="./Free Flowchart Maker - FlowRun_files/from800px.css" media="screen and (min-width: 800px)"><script src="./Free Flowchart Maker - FlowRun_files/paddle.js.download" hx-preserve="true" id="paddle-js-script"></script><script hx-preserve="true" id="script-paddle">
+    Paddle.Environment.set('production')
+    Paddle.Initialize({ 
+      token: 'live_5d8b21da34d08976d7c18be0d6f',
+      pwCustomer: {}
+    });
+
+    async function getPlanPeriodPrices(countryCode, plan, period) {
+      if (plan == 'free') return dummyPrices();
+      const request = {
+        items: allPrices()[plan][period],
+        address: {
+          countryCode: countryCode
+        }
+      }
+      return await Paddle.PricePreview(request).then((result) => {
+        let items = result.data.details.lineItems;
+        return items.map(item => ({ id: item.price.id, formatted: item.formattedTotals.total }));
+      });
+    }
+
+    function openCheckout(plan, tier, period) {
+        let tierIndex = 0;
+        let discountCode = null;
+        if (tier == "advanced") tierIndex = 1;
+        if (tier == "pro") tierIndex = 2;
+        
+        if (plan == "solo") discountCode = 'FLOWRUN1ST10SOLO';
+        if (plan == "school") discountCode = 'FLOWRUN1ST10SCHOOL';
+        
+        const item = allPrices()[plan][period][tierIndex];
+        Paddle.Checkout.open({
+            
+            settings: {
+                displayMode: 'overlay',
+                successUrl: 'https://flowrun.io/dashboard',
+                theme: 'dark'
+            },
+            items: [item],
+            discountCode: discountCode
+        });
+    }
+
+    function dummyPrices() {
+      return [{ id: '1', formatted: '' }, { id: '2', formatted: '' }, { id: '3', formatted: '' }];
+    }
+
+    function allPrices() {
+        return {
+            'solo': {
+                'monthly': [
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 },
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 },
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 }
+                ],
+                'yearly': [
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 },
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 },
+                    { "priceId": "pri_01k0vtzjxnk0vznx8fvh64btf8", "quantity": 1 }
+                ]
+            },
+            'school': {
+                'monthly': [
+                    { "priceId": "pri_01j9nx9z3bv5ab3tsy4q4kpsyd", "quantity": 1 },
+                    { "priceId": "pri_01j9nxe215t5bepckf0mf3f9ce", "quantity": 1 },
+                    { "priceId": "pri_01j9nx6b1at6611jp5wdtng713", "quantity": 1 }
+                ],
+                'yearly': [
+                    { "priceId": "pri_01j9nx9fz6jhs23n1fg6htksbw", "quantity": 1 },
+                    { "priceId": "pri_01j9nxehzkx1r5px13hdg4312a", "quantity": 1 },
+                    { "priceId": "pri_01j9nx6t24eewdtgyxr3wmgkr0", "quantity": 1 }
+                ]
+            }
+        }
+    }
+    </script><script src="./Free Flowchart Maker - FlowRun_files/graphviz.umd.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/graphviz.umd.js"></script><script src="./Free Flowchart Maker - FlowRun_files/d3.min.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/d3.min.js"></script><script src="./Free Flowchart Maker - FlowRun_files/d3-graphviz.min.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/d3-graphviz.min.js"></script><script src="./Free Flowchart Maker - FlowRun_files/prism.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/prism.js"></script><script src="./Free Flowchart Maker - FlowRun_files/flowrun.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/flowrun.js"></script><script src="./Free Flowchart Maker - FlowRun_files/toastify-js.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/toastify-js.js"></script><script src="./Free Flowchart Maker - FlowRun_files/htmx.min.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/htmx.min.js"></script><script src="./Free Flowchart Maker - FlowRun_files/htmx-head-support.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/htmx-head-support.js"></script><script src="./Free Flowchart Maker - FlowRun_files/htmx-json-enc.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/htmx-json-enc.js"></script><script src="./Free Flowchart Maker - FlowRun_files/alpine.min.js.download" defer="defer" hx-preserve="true" id="/scripts/vendor/alpine.min.js"></script><script src="./Free Flowchart Maker - FlowRun_files/main.js.download" defer="defer" hx-preserve="true" id="/scripts/main.js"></script>
+<script async="" defer="" data-website-id="fde4ed29-c67c-49eb-9b95-4e466a86c902" src="./Free Flowchart Maker - FlowRun_files/script.js.download"></script>
+<meta name="htmx-config" content="{ &quot;includeIndicatorStyles&quot;: false }"><meta id="_csrf" content="sJNyNcwhOtwFLTXJ"><title>Free Flowchart Maker - FlowRun</title></head><body hx-ext="head-support" hx-boost="true" hx-swap="innerHTML show:unset" hx-headers="{ &quot;X-CSRF-TOKEN&quot;: &quot;TorfkQGxPXDMpoIt&quot; }" class=""><header id="top-nav-header" class="pico container"><nav><ul><li><a href="https://flowrun.io/" aria-label="FlowRun Home Page"><div class="logo" data-nosnippet="true">
+<svg version="1.1" viewBox="0 0 162 32" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(-11 -29)">
+          <text x="9.508152" y="54.889942" style="fill:#000000;font-family:sans-serif;font-size:28px;line-height:1.25;stroke-width:.7" xml:space="preserve"><tspan x="9.508152" y="54.889942" style="font-family:Poppins;font-weight:bold;stroke-width:.7"><tspan style="fill:#ffffff;font-family:Poppins;font-weight:bold">FLOW{</tspan><tspan style="fill:#e3be25;font-family:Poppins;font-weight:bold">RUN</tspan><tspan style="fill:#ffffff;font-family:Poppins;font-weight:bold">}</tspan></tspan></text>
+        </g>
+      </svg>
+</div><div class="logo-mobile" data-nosnippet="true">
+<svg version="1.1" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-11 -29)">
+  <text x="46.431824" y="129.02483" style="fill:#000000;font-family:sans-serif;font-size:28px;line-height:1.25;stroke-width:.7" xml:space="preserve"><tspan x="46.431824" y="129.02483" style="fill:#ffffff;font-family:Poppins;font-size:64px;font-weight:bold;stroke-width:.7">FLOW</tspan><tspan x="46.431824" y="178.31462" style="font-family:Poppins;font-size:28px;font-weight:bold"></tspan></text>
+  <text x="39.807755" y="225.57928" style="fill:#000000;font-family:sans-serif;font-size:64px;line-height:1.25;stroke-width:.7" xml:space="preserve"><tspan x="39.807755" y="225.57928" style="font-family:Poppins;font-size:64px;font-weight:bold;stroke-width:.7"><tspan style="fill:#ffffff;font-family:Poppins;font-size:64px;font-weight:bold">{</tspan><tspan style="fill:#e3be25;font-family:Poppins;font-size:64px;font-weight:bold">RUN</tspan><tspan style="fill:#ffffff;font-family:Poppins;font-size:64px;font-weight:bold">}</tspan></tspan></text>
+ </g>
+</svg>
+
+
+</div></a></li></ul><ul><li><a href="https://flowrun.io/scratchpad" aria-current="page">Code</a></li><li><a href="https://flowrun.io/explore">Explore</a></li><li><a href="https://flowrun.io/docs">Docs</a></li><li><a href="https://flowrun.io/pricing">Pricing</a></li><li><a href="https://flowrun.io/login">Log In</a></li></ul></nav></header><main class="container"><div data-theme="light" style="margin-bottom: 1rem;"><section id="scratchpadDonateBanner" class="pico scratchpad-donate-banner" hidden="hidden" data-scratchpad-donate-banner="true" data-run-threshold="15" data-session-storage-key="scratchpad.run.count"><strong>Less than 1% of users contribute to keep FlowRun online and ad-free.</strong><p>If the scratchpad helps you learn or teach, a small contribution keeps it available for everyone.</p><div class="cta-group"><a href="https://flowrun.io/donate" role="button" class="contrast btn-medium">Support FlowRun</a><small>Optional, non-blocking, and only shown after a longer scratchpad session.</small></div></section><section class="pico program-meta"><button hx-post="/programs" hx-vals="js:{
+          name: scratchpadFlowRunEditor.name(),
+          json: scratchpadFlowRunEditor.json()
+        }" hx-ext="json-enc" id="btnSaveProgramScratchPad"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm560-526L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Zm-80-86v446-560 114Z"></path></svg>&nbsp;Save</button></section><div data-flowrunmode="scratchpad" class="flowrun-instance flowrun--editable">
+        <div class="flowrun-functions-list flowrun--panel">
+            <div class="flowrun-fun-chooser"><div><label title="main: Void"><input type="radio" class="flowrun-input-radio" id="fun-main" value="fun-main" name="id_283aba48_0a46_455a_b47b_9d2ef56fdda5-currentFunction"><span>main</span></label></div><div><label title="BubbleSort(nim: IntegerArray, nilai: IntegerArray, n: Integer): Void"><input type="radio" class="flowrun-input-radio" id="fun-id_a836951a_7fa7_4189_9566_8b9285d30d2a" value="fun-id_a836951a_7fa7_4189_9566_8b9285d30d2a" name="id_283aba48_0a46_455a_b47b_9d2ef56fdda5-currentFunction"><span>BubbleSort(nim, nilai, n)</span></label><button class="flowrun-btn-fun-delete" title="Delete function"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"></path></svg> </button></div><div><label title="LinearSearch(nim: IntegerArray, cariNIM: Integer, n: Integer): Integer"><input type="radio" class="flowrun-input-radio" id="fun-id_b3da3c53_2984_42bc_a776_771b63e9f1c5" value="fun-id_b3da3c53_2984_42bc_a776_771b63e9f1c5" name="id_283aba48_0a46_455a_b47b_9d2ef56fdda5-currentFunction"><span>LinearSearch(nim, cariNIM, n)</span></label><button class="flowrun-btn-fun-delete" title="Delete function"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"></path></svg> </button></div><div><label title="Analisis(nilai: IntegerArray, n: Integer): Void"><input type="radio" class="flowrun-input-radio" id="fun-id_0cb966dd_17f2_4749_bc9a_15d6d2dee3c7" value="fun-id_0cb966dd_17f2_4749_bc9a_15d6d2dee3c7" name="id_283aba48_0a46_455a_b47b_9d2ef56fdda5-currentFunction"><span>Analisis(nilai, n)</span></label><button class="flowrun-btn-fun-delete" title="Delete function"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"></path></svg> </button></div></div>
+            <button class="flowrun-btn-fun-add" title="Add new function"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"></path></svg> </button>
+        </div>
+
+        <div class="flowrun-diagram flowrun--panel">
+            <div class="flowrun-draw-io-btns">
+                <button class="flowrun-btn-download" title="Download"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-337q-8 0-15-2.5t-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"></path></svg> </button>
+                <button class="flowrun-btn-load" title="Load from file"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-367v127q0 17 11.5 28.5T480-200q17 0 28.5-11.5T520-240v-127l36 36q6 6 13.5 9t15 2.5q7.5-.5 14.5-3.5t13-9q11-12 11.5-28T612-388L508-492q-6-6-13-8.5t-15-2.5q-8 0-15 2.5t-13 8.5L348-388q-12 12-11.5 28t12.5 28q12 11 28 11.5t28-11.5l35-35ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm280-560v-160H240v640h480v-440H560q-17 0-28.5-11.5T520-640ZM240-800v200-200 640-640Z"></path></svg> </button>
+                <button class="flowrun-btn-copy-source" title="Copy Source"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M760-200H320q-33 0-56.5-23.5T240-280v-560q0-33 23.5-56.5T320-920h247q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v367q0 33-23.5 56.5T760-200Zm0-440H620q-25 0-42.5-17.5T560-700v-140H320v560h440v-360ZM160-40q-33 0-56.5-23.5T80-120v-520q0-17 11.5-28.5T120-680q17 0 28.5 11.5T160-640v520h400q17 0 28.5 11.5T600-80q0 17-11.5 28.5T560-40H160Zm160-800v200-200 560-560Z"></path></svg> </button>
+                <button class="flowrun-btn-paste-source" title="Paste Source"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"></path></svg> </button>
+                <button class="flowrun-btn-copy-dot" title="Copy DOT"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M600-200v-40h-80q-33 0-56.5-23.5T440-320v-320h-80v40q0 33-23.5 56.5T280-520H160q-33 0-56.5-23.5T80-600v-160q0-33 23.5-56.5T160-840h120q33 0 56.5 23.5T360-760v40h240v-40q0-33 23.5-56.5T680-840h120q33 0 56.5 23.5T880-760v160q0 33-23.5 56.5T800-520H680q-33 0-56.5-23.5T600-600v-40h-80v320h80v-40q0-33 23.5-56.5T680-440h120q33 0 56.5 23.5T880-360v160q0 33-23.5 56.5T800-120H680q-33 0-56.5-23.5T600-200ZM160-760v160-160Zm520 400v160-160Zm0-400v160-160Zm0 160h120v-160H680v160Zm0 400h120v-160H680v160ZM160-600h120v-160H160v160Z"></path></svg> </button>
+            </div>
+            <div class="flowrun-diagram-info">
+                <input class="flowrun-program-name" type="text" maxlength="30" style="width: 14ch;">
+                <span>&nbsp;</span>
+                <button class="flowrun-btn-config"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm7-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"></path></svg></button>
+                <button class="flowrun-btn-zoom-reset">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-120v-240h80v104l124-124 56 56-124 124h104v80H120Zm480 0v-80h104L580-324l56-56 124 124v-104h80v240H600ZM324-580 200-704v104h-80v-240h240v80H256l124 124-56 56Zm312 0-56-56 124-124H600v-80h240v240h-80v-104L636-580Z"></path></svg>
+    </button>
+            </div>
+            <div class="flowrun-draw-exec-btns">
+                <button class="flowrun-btn-run" title="Run"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Zm80-207Zm0 134 210-134-210-134v268Z"></path></svg> </button>
+                <button class="flowrun-btn-run-step" title="Run Step By Step"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M660-280v-400q0-17 11.5-28.5T700-720q17 0 28.5 11.5T740-680v400q0 17-11.5 28.5T700-240q-17 0-28.5-11.5T660-280Zm-440-35v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T548-480q0 10-4.5 18.5T530-447L282-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Zm80-165Zm0 90 136-90-136-90v180Z"></path></svg> </button>
+                <button class="flowrun-btn-stop flowrun--disabled" title="Stop"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-320v-320q0-33 23.5-56.5T320-720h320q33 0 56.5 23.5T720-640v320q0 33-23.5 56.5T640-240H320q-33 0-56.5-23.5T240-320Zm80 0h320v-320H320v320Zm160-160Z"></path></svg> </button>
+            </div>
+            <div class="flowrun-draw"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1281pt" height="1927pt" viewBox="0.00 0.00 1280.96 1926.80">
+<g id="graph0" class="graph" transform="translate(-704.4560296959339,4750.542626266182) scale(2.1121115290115706)">
+<!-- id_84052f28_454c_4669_b9d6_f3c20c34a630 -->
+<g id="id_84052f28_454c_4669_b9d6_f3c20c34a630#Begin" class="node">
+<title>id_84052f28_454c_4669_b9d6_f3c20c34a630</title>
+<g id="a_id_84052f28_454c_4669_b9d6_f3c20c34a630#Begin"><a title="Begin">
+<ellipse fill="#8de4ff" stroke="#00799e" stroke-width="0.5" cx="628.56" cy="-1904.4" rx="36" ry="14.4"></ellipse>
+<text text-anchor="middle" x="628.56" y="-1900.8" font-family="Fira Mono" font-size="12.00" fill="#982b13">Begin</text>
+</a>
+</g>
+</g>
+<!-- id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3#Declare" class="node">
+<title>id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3</title>
+<g id="a_id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3#Declare"><a title="nim: IntegerArray">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="664.56,-1851.3 592.56,-1851.3 592.56,-1822.5 664.56,-1822.5 664.56,-1851.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-1833.3" font-family="Fira Mono" font-size="12.00" fill="white">nim</text>
+</a>
+</g>
+</g>
+<!-- id_84052f28_454c_4669_b9d6_f3c20c34a630&#45;&gt;id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="id_84052f28_454c_4669_b9d6_f3c20c34a630@fun-main" class="edge">
+<title>id_84052f28_454c_4669_b9d6_f3c20c34a630:s-&gt;id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3:n</title>
+<g id="a_id_84052f28_454c_4669_b9d6_f3c20c34a630@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1890.07C628.56,-1890.07 628.56,-1873.77 628.56,-1862.31"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1862.33 628.56,-1854.33 625.76,-1862.33 631.36,-1862.33"></polygon>
+</a>
+</g>
+</g>
+<!-- id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="id_0daa0392_2d1d_4b79_a677_40aea5443945#Declare" class="node">
+<title>id_0daa0392_2d1d_4b79_a677_40aea5443945</title>
+<g id="a_id_0daa0392_2d1d_4b79_a677_40aea5443945#Declare"><a title="nilai: IntegerArray">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="664.56,-1783.8 592.56,-1783.8 592.56,-1755 664.56,-1755 664.56,-1783.8"></polygon>
+<text text-anchor="middle" x="628.56" y="-1765.8" font-family="Fira Mono" font-size="12.00" fill="white">nilai</text>
+</a>
+</g>
+</g>
+<!-- id_49ef1636_14d2_4178_b08a_6fdebc85b87d&#45;&gt;id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3@fun-main" class="edge">
+<title>id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3:s-&gt;id_0daa0392_2d1d_4b79_a677_40aea5443945:n</title>
+<g id="a_id_b2b2ea10_1a8d_48ed_8d2b_4e35d50e0ce3@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1822.5C628.56,-1822.5 628.56,-1806.23 628.56,-1794.79"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1794.83 628.56,-1786.83 625.76,-1794.83 631.36,-1794.83"></polygon>
+</a>
+</g>
+</g>
+<!-- id_2b74205f_1c8f_4a18_a819_c8f8155f0b13 -->
+<g id="id_2b74205f_1c8f_4a18_a819_c8f8155f0b13#Declare" class="node">
+<title>id_2b74205f_1c8f_4a18_a819_c8f8155f0b13</title>
+<g id="a_id_2b74205f_1c8f_4a18_a819_c8f8155f0b13#Declare"><a title="indexCari: Integer">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="671.4,-1716.3 585.72,-1716.3 585.72,-1687.5 671.4,-1687.5 671.4,-1716.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-1698.3" font-family="Fira Mono" font-size="12.00" fill="white">indexCari</text>
+</a>
+</g>
+</g>
+<!-- id_0daa0392_2d1d_4b79_a677_40aea5443945&#45;&gt;id_2b74205f_1c8f_4a18_a819_c8f8155f0b13 -->
+<g id="id_0daa0392_2d1d_4b79_a677_40aea5443945@fun-main" class="edge">
+<title>id_0daa0392_2d1d_4b79_a677_40aea5443945:s-&gt;id_2b74205f_1c8f_4a18_a819_c8f8155f0b13:n</title>
+<g id="a_id_0daa0392_2d1d_4b79_a677_40aea5443945@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1755C628.56,-1755 628.56,-1738.73 628.56,-1727.29"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1727.33 628.56,-1719.33 625.76,-1727.33 631.36,-1727.33"></polygon>
+</a>
+</g>
+</g>
+<!-- id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3 -->
+<g id="id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3#Declare" class="node">
+<title>id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3</title>
+<g id="a_id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3#Declare"><a title="cariNIM: Integer">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="664.56,-1648.8 592.56,-1648.8 592.56,-1620 664.56,-1620 664.56,-1648.8"></polygon>
+<text text-anchor="middle" x="628.56" y="-1630.8" font-family="Fira Mono" font-size="12.00" fill="white">cariNIM</text>
+</a>
+</g>
+</g>
+<!-- id_2b74205f_1c8f_4a18_a819_c8f8155f0b13&#45;&gt;id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3 -->
+<g id="id_2b74205f_1c8f_4a18_a819_c8f8155f0b13@fun-main" class="edge">
+<title>id_2b74205f_1c8f_4a18_a819_c8f8155f0b13:s-&gt;id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3:n</title>
+<g id="a_id_2b74205f_1c8f_4a18_a819_c8f8155f0b13@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1687.5C628.56,-1687.5 628.56,-1671.23 628.56,-1659.79"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1659.83 628.56,-1651.83 625.76,-1659.83 631.36,-1659.83"></polygon>
+</a>
+</g>
+</g>
+<!-- id_5d959d3d_bd0c_4745_bf92_cf083f228d82 -->
+<g id="id_5d959d3d_bd0c_4745_bf92_cf083f228d82#Declare" class="node">
+<title>id_5d959d3d_bd0c_4745_bf92_cf083f228d82</title>
+<g id="a_id_5d959d3d_bd0c_4745_bf92_cf083f228d82#Declare"><a title="n: Integer = 15">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="664.56,-1581.3 592.56,-1581.3 592.56,-1552.5 664.56,-1552.5 664.56,-1581.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-1563.3" font-family="Fira Mono" font-size="12.00" fill="white">n = 15</text>
+</a>
+</g>
+</g>
+<!-- id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3&#45;&gt;id_5d959d3d_bd0c_4745_bf92_cf083f228d82 -->
+<g id="id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3@fun-main" class="edge">
+<title>id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3:s-&gt;id_5d959d3d_bd0c_4745_bf92_cf083f228d82:n</title>
+<g id="a_id_4d999bcd_81c1_4ebb_a41d_aea9cbce3ed3@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1620C628.56,-1620 628.56,-1603.73 628.56,-1592.29"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1592.33 628.56,-1584.33 625.76,-1592.33 631.36,-1592.33"></polygon>
+</a>
+</g>
+</g>
+<!-- id_6ee3da8d_83cc_4d66_a529_7bdf137707bb -->
+<g id="id_6ee3da8d_83cc_4d66_a529_7bdf137707bb#Declare" class="node">
+<title>id_6ee3da8d_83cc_4d66_a529_7bdf137707bb</title>
+<g id="a_id_6ee3da8d_83cc_4d66_a529_7bdf137707bb#Declare"><a title="i: Integer">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="664.56,-1513.8 592.56,-1513.8 592.56,-1485 664.56,-1485 664.56,-1513.8"></polygon>
+<text text-anchor="middle" x="628.56" y="-1495.8" font-family="Fira Mono" font-size="12.00" fill="white">i</text>
+</a>
+</g>
+</g>
+<!-- id_5d959d3d_bd0c_4745_bf92_cf083f228d82&#45;&gt;id_6ee3da8d_83cc_4d66_a529_7bdf137707bb -->
+<g id="id_5d959d3d_bd0c_4745_bf92_cf083f228d82@fun-main" class="edge">
+<title>id_5d959d3d_bd0c_4745_bf92_cf083f228d82:s-&gt;id_6ee3da8d_83cc_4d66_a529_7bdf137707bb:n</title>
+<g id="a_id_5d959d3d_bd0c_4745_bf92_cf083f228d82@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1552.5C628.56,-1552.5 628.56,-1536.23 628.56,-1524.79"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1524.83 628.56,-1516.83 625.76,-1524.83 631.36,-1524.83"></polygon>
+</a>
+</g>
+</g>
+<!-- id_d9b48332_ef48_4bfa_960b_387248d43963 -->
+<g id="id_d9b48332_ef48_4bfa_960b_387248d43963#Declare" class="node">
+<title>id_d9b48332_ef48_4bfa_960b_387248d43963</title>
+<g id="a_id_d9b48332_ef48_4bfa_960b_387248d43963#Declare"><a title="tempn: Integer = 1000">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="683.28,-1446.3 573.84,-1446.3 573.84,-1417.5 683.28,-1417.5 683.28,-1446.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-1428.3" font-family="Fira Mono" font-size="12.00" fill="white">tempn = 1000</text>
+</a>
+</g>
+</g>
+<!-- id_6ee3da8d_83cc_4d66_a529_7bdf137707bb&#45;&gt;id_d9b48332_ef48_4bfa_960b_387248d43963 -->
+<g id="id_6ee3da8d_83cc_4d66_a529_7bdf137707bb@fun-main" class="edge">
+<title>id_6ee3da8d_83cc_4d66_a529_7bdf137707bb:s-&gt;id_d9b48332_ef48_4bfa_960b_387248d43963:n</title>
+<g id="a_id_6ee3da8d_83cc_4d66_a529_7bdf137707bb@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1485C628.56,-1485 628.56,-1468.73 628.56,-1457.29"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1457.33 628.56,-1449.33 625.76,-1457.33 631.36,-1457.33"></polygon>
+</a>
+</g>
+</g>
+<!-- id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c#ForLoop" class="node">
+<title>id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c#ForLoop"><a title="i = 0 to n-1 by 1">
+<polygon fill="#ffd166" stroke="#8f6400" stroke-width="0.5" points="628.56,-1382.4 543.24,-1364.4 628.56,-1346.4 713.88,-1364.4 628.56,-1382.4"></polygon>
+<text text-anchor="middle" x="628.56" y="-1360.8" font-family="Fira Mono" font-size="12.00">i = 0 to n-1 by 1</text>
+</a>
+</g>
+</g>
+<!-- id_d9b48332_ef48_4bfa_960b_387248d43963&#45;&gt;id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_d9b48332_ef48_4bfa_960b_387248d43963@fun-main" class="edge">
+<title>id_d9b48332_ef48_4bfa_960b_387248d43963:s-&gt;id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c:n</title>
+<g id="a_id_d9b48332_ef48_4bfa_960b_387248d43963@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1417.5C628.56,-1417.5 628.56,-1403.39 628.56,-1393.03"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-1393.3 628.56,-1385.3 625.76,-1393.3 631.36,-1393.3"></polygon>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node10" class="node">
+<title>true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="898.56" cy="-1364.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c:e-&gt;true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M713.8,-1364.4C713.8,-1364.4 892.83,-1364.4 898.43,-1364.4"></path>
+</a>
+</g>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@id_ad081495_c15d_4a43_9811_8563ee8ac272-taillabel"><a title=" ">
+<text text-anchor="middle" x="721.57" y="-1367.4" font-family="Fira Mono" font-size="10.00" fill="forestgreen">true</text>
+</a>
+</g>
+</g>
+<!-- false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node11" class="node">
+<title>false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="538.56" cy="-1364.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main" class="edge">
+<title>id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c:w-&gt;false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M543.32,-1364.4C543.32,-1364.4 539.14,-1364.4 538.61,-1364.4"></path>
+</a>
+</g>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main-taillabel"><a title=" ">
+<text text-anchor="middle" x="533.88" y="-1367.4" font-family="Fira Mono" font-size="10.00" fill="red">false</text>
+</a>
+</g>
+</g>
+<!-- id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965 -->
+<g id="id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965#Assign" class="node">
+<title>id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965</title>
+<g id="a_id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965#Assign"><a title="tempn = tempn + 1">
+<polygon fill="#002a3a" stroke="#001117" stroke-width="0.5" points="973.08,-1311.3 824.04,-1311.3 824.04,-1282.5 973.08,-1282.5 973.08,-1311.3"></polygon>
+<text text-anchor="middle" x="898.56" y="-1293.3" font-family="Fira Mono" font-size="12.00" fill="white">tempn = tempn + 1</text>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965 -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>true_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965:n</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.56,-1364.25C898.56,-1362.06 898.56,-1336.77 898.56,-1321.95"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="901.36,-1322.33 898.56,-1314.33 895.76,-1322.33 901.36,-1322.33"></polygon>
+</a>
+</g>
+</g>
+<!-- false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node18" class="node">
+<title>false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="538.56" cy="-1026.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main" class="edge">
+<title>false_dummy_up_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M538.56,-1364.34C538.56,-1359.19 538.56,-1032.07 538.56,-1026.96"></path>
+</a>
+</g>
+</g>
+<!-- id_0e6fa74e_2a37_4ec0_9877_75104164ec46 -->
+<g id="id_0e6fa74e_2a37_4ec0_9877_75104164ec46#Assign" class="node">
+<title>id_0e6fa74e_2a37_4ec0_9877_75104164ec46</title>
+<g id="a_id_0e6fa74e_2a37_4ec0_9877_75104164ec46#Assign"><a title="nim[i] = tempn">
+<polygon fill="#002a3a" stroke="#001117" stroke-width="0.5" points="961.2,-1243.8 835.92,-1243.8 835.92,-1215 961.2,-1215 961.2,-1243.8"></polygon>
+<text text-anchor="middle" x="898.56" y="-1225.8" font-family="Fira Mono" font-size="12.00" fill="white">nim[i] = tempn</text>
+</a>
+</g>
+</g>
+<!-- id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965&#45;&gt;id_0e6fa74e_2a37_4ec0_9877_75104164ec46 -->
+<g id="id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965:s-&gt;id_0e6fa74e_2a37_4ec0_9877_75104164ec46:n</title>
+<g id="a_id_6e2b3022_c1d2_4cbd_ab3e_13410db7f965@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.56,-1282.5C898.56,-1282.5 898.56,-1266.23 898.56,-1254.79"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="901.36,-1254.83 898.56,-1246.83 895.76,-1254.83 901.36,-1254.83"></polygon>
+</a>
+</g>
+</g>
+<!-- id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6 -->
+<g id="id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6#Output" class="node">
+<title>id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6</title>
+<g id="a_id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6#Output"><a title="&quot;Masukkan Nilai Untuk NIM: &quot; + tempn + &quot;, Nilai : &quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="1029.96,-1176.3 767.16,-1176.3 673.56,-1147.5 1123.56,-1147.5 1029.96,-1176.3"></polygon>
+<text text-anchor="middle" x="898.56" y="-1158.3" font-family="Fira Mono" font-size="12.00" fill="white">"Masukkan Nilai Untuk NIM: " + tempn + ", Nilai : "</text>
+</a>
+</g>
+</g>
+<!-- id_0e6fa74e_2a37_4ec0_9877_75104164ec46&#45;&gt;id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6 -->
+<g id="id_0e6fa74e_2a37_4ec0_9877_75104164ec46@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>id_0e6fa74e_2a37_4ec0_9877_75104164ec46:s-&gt;id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6:n</title>
+<g id="a_id_0e6fa74e_2a37_4ec0_9877_75104164ec46@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.56,-1215C898.56,-1215 898.56,-1198.22 898.56,-1186.68"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="901.36,-1187.06 898.56,-1179.06 895.76,-1187.06 901.36,-1187.06"></polygon>
+</a>
+</g>
+</g>
+<!-- id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef -->
+<g id="id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef#Input" class="node">
+<title>id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef</title>
+<g id="a_id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef#Input"><a title="nilai[i]">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="875.85,-1080 921.27,-1080 937.44,-1108.8 859.68,-1108.8 875.85,-1080"></polygon>
+<text text-anchor="middle" x="898.56" y="-1090.8" font-family="Fira Mono" font-size="12.00" fill="white">nilai[i]</text>
+</a>
+</g>
+</g>
+<!-- id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6&#45;&gt;id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef -->
+<g id="id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6:s-&gt;id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef:n</title>
+<g id="a_id_9fe3aa93_5fc5_4a9c_8878_49d55e6613f6@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.56,-1147.76C898.56,-1147.76 898.56,-1130.96 898.56,-1119.41"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="901.36,-1119.78 898.56,-1111.78 895.76,-1119.78 901.36,-1119.78"></polygon>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node16" class="node">
+<title>true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="898.56" cy="-1034.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef&#45;&gt;true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef:s-&gt;true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c:n</title>
+<g id="a_id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.56,-1080.05C898.56,-1080.05 898.56,-1034.4 898.56,-1034.4"></path>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node17" class="node">
+<title>true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="628.56" cy="-1034.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>true_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M898.51,-1034.4C894.39,-1034.4 632.7,-1034.4 628.61,-1034.4"></path>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272" class="edge">
+<title>true_dummy_down_left_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c:s</title>
+<g id="a_id_bfe78393_0ce3_4ea2_98e7_ffd1b7e937ef@id_ad081495_c15d_4a43_9811_8563ee8ac272"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1034.46C628.56,-1038.71 628.56,-1280.8 628.56,-1335.59"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="625.76,-1335.5 628.56,-1343.5 631.36,-1335.5 625.76,-1335.5"></polygon>
+</a>
+</g>
+</g>
+<!-- end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="node19" class="node">
+<title>end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="628.56" cy="-1026.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main" class="edge">
+<title>false_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M538.63,-1026.9C541.31,-1026.9 625.86,-1026.9 628.5,-1026.9"></path>
+</a>
+</g>
+</g>
+<!-- id_686f6333_21b1_44a9_a6ae_71b659ae763c -->
+<g id="id_686f6333_21b1_44a9_a6ae_71b659ae763c#Call" class="node">
+<title>id_686f6333_21b1_44a9_a6ae_71b659ae763c</title>
+<g id="a_id_686f6333_21b1_44a9_a6ae_71b659ae763c#Call"><a title="BubbleSort(nim, nilai, n)">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="734.76,-973.8 522.36,-973.8 522.36,-945 734.76,-945 734.76,-973.8"></polygon>
+<text text-anchor="middle" x="628.56" y="-955.8" font-family="Fira Mono" font-size="12.00" fill="white">BubbleSort(nim, nilai, n)</text>
+</a>
+</g>
+</g>
+<!-- end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c&#45;&gt;id_686f6333_21b1_44a9_a6ae_71b659ae763c -->
+<g id="id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main" class="edge">
+<title>end_dummy_down_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c-&gt;id_686f6333_21b1_44a9_a6ae_71b659ae763c</title>
+<g id="a_id_3b836d3c_5b62_4bce_b881_d0d84b00bd0c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-1026.85C628.56,-1025.67 628.56,-1003.24 628.56,-984.57"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-984.68 628.56,-976.68 625.76,-984.68 631.36,-984.68"></polygon>
+</a>
+</g>
+</g>
+<!-- id_09b93760_260c_4778_a9fa_913c6eba7fcc -->
+<g id="id_09b93760_260c_4778_a9fa_913c6eba7fcc#Output" class="node">
+<title>id_09b93760_260c_4778_a9fa_913c6eba7fcc</title>
+<g id="a_id_09b93760_260c_4778_a9fa_913c6eba7fcc#Output"><a title="&quot;
+ === DAFTAR NILAI YANG TELAH YANG TELAH DIURUTKAN ===&quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="769.21,-906.3 487.91,-906.3 387.72,-877.5 869.4,-877.5 769.21,-906.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-895.5" font-family="Fira Mono" font-size="12.00" fill="white">"</text>
+<text text-anchor="middle" x="628.56" y="-881.1" font-family="Fira Mono" font-size="12.00" fill="white"> === DAFTAR NILAI YANG TELAH YANG TELAH DIURUTKAN ==="</text>
+</a>
+</g>
+</g>
+<!-- id_686f6333_21b1_44a9_a6ae_71b659ae763c&#45;&gt;id_09b93760_260c_4778_a9fa_913c6eba7fcc -->
+<g id="id_686f6333_21b1_44a9_a6ae_71b659ae763c@fun-main" class="edge">
+<title>id_686f6333_21b1_44a9_a6ae_71b659ae763c:s-&gt;id_09b93760_260c_4778_a9fa_913c6eba7fcc:n</title>
+<g id="a_id_686f6333_21b1_44a9_a6ae_71b659ae763c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-945C628.56,-945 628.56,-928.71 628.56,-917.26"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-917.29 628.56,-909.29 625.76,-917.29 631.36,-917.29"></polygon>
+</a>
+</g>
+</g>
+<!-- id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f#ForLoop" class="node">
+<title>id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f#ForLoop"><a title="i = 0 to n-1 by 1">
+<polygon fill="#ffd166" stroke="#8f6400" stroke-width="0.5" points="628.56,-842.4 543.24,-824.4 628.56,-806.4 713.88,-824.4 628.56,-842.4"></polygon>
+<text text-anchor="middle" x="628.56" y="-820.8" font-family="Fira Mono" font-size="12.00">i = 0 to n-1 by 1</text>
+</a>
+</g>
+</g>
+<!-- id_09b93760_260c_4778_a9fa_913c6eba7fcc&#45;&gt;id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_09b93760_260c_4778_a9fa_913c6eba7fcc@fun-main" class="edge">
+<title>id_09b93760_260c_4778_a9fa_913c6eba7fcc:s-&gt;id_fe54a277_c909_43ef_8b11_cfeeeef8629f:n</title>
+<g id="a_id_09b93760_260c_4778_a9fa_913c6eba7fcc@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-877.53C628.56,-877.53 628.56,-863.41 628.56,-853.04"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-853.3 628.56,-845.3 625.76,-853.3 631.36,-853.3"></polygon>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node23" class="node">
+<title>true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="988.56" cy="-824.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@id_3e519b51_6562_4e72_aa67_e3c0567d548d" class="edge">
+<title>id_fe54a277_c909_43ef_8b11_cfeeeef8629f:e-&gt;true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@id_3e519b51_6562_4e72_aa67_e3c0567d548d"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M713.8,-824.4C713.8,-824.4 984.28,-824.4 988.51,-824.4"></path>
+</a>
+</g>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@id_3e519b51_6562_4e72_aa67_e3c0567d548d-taillabel"><a title=" ">
+<text text-anchor="middle" x="721.57" y="-827.4" font-family="Fira Mono" font-size="10.00" fill="forestgreen">true</text>
+</a>
+</g>
+</g>
+<!-- false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node24" class="node">
+<title>false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="538.56" cy="-824.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main" class="edge">
+<title>id_fe54a277_c909_43ef_8b11_cfeeeef8629f:w-&gt;false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M543.32,-824.4C543.32,-824.4 539.14,-824.4 538.61,-824.4"></path>
+</a>
+</g>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main-taillabel"><a title=" ">
+<text text-anchor="middle" x="533.88" y="-827.4" font-family="Fira Mono" font-size="10.00" fill="red">false</text>
+</a>
+</g>
+</g>
+<!-- id_5744fc97_a46f_4dc1_9e64_276250ca7e0c -->
+<g id="id_5744fc97_a46f_4dc1_9e64_276250ca7e0c#Output" class="node">
+<title>id_5744fc97_a46f_4dc1_9e64_276250ca7e0c</title>
+<g id="a_id_5744fc97_a46f_4dc1_9e64_276250ca7e0c#Output"><a title="&quot;Peringkat &quot; + (i+1) + &quot; NIM: &quot; + nim[i] + &quot; Nilai: &quot; + nilai[i]">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="1154.65,-771.3 822.47,-771.3 704.16,-742.5 1272.96,-742.5 1154.65,-771.3"></polygon>
+<text text-anchor="middle" x="988.56" y="-753.3" font-family="Fira Mono" font-size="12.00" fill="white">"Peringkat " + (i+1) + " NIM: " + nim[i] + " Nilai: " + nilai[i]</text>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;id_5744fc97_a46f_4dc1_9e64_276250ca7e0c -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@id_3e519b51_6562_4e72_aa67_e3c0567d548d" class="edge">
+<title>true_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;id_5744fc97_a46f_4dc1_9e64_276250ca7e0c:n</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@id_3e519b51_6562_4e72_aa67_e3c0567d548d"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.56,-824.25C988.56,-822.06 988.56,-796.76 988.56,-781.94"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="991.36,-782.31 988.56,-774.31 985.76,-782.31 991.36,-782.31"></polygon>
+</a>
+</g>
+</g>
+<!-- false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node28" class="node">
+<title>false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="538.56" cy="-689.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main" class="edge">
+<title>false_dummy_up_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M538.56,-824.3C538.56,-820.28 538.56,-693.46 538.56,-689.49"></path>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node26" class="node">
+<title>true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="988.56" cy="-696.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_5744fc97_a46f_4dc1_9e64_276250ca7e0c&#45;&gt;true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d" class="edge">
+<title>id_5744fc97_a46f_4dc1_9e64_276250ca7e0c:s-&gt;true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f:n</title>
+<g id="a_id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.56,-742.52C988.56,-742.52 988.56,-696.9 988.56,-696.9"></path>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node27" class="node">
+<title>true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="628.56" cy="-696.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d" class="edge">
+<title>true_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.49,-696.9C983,-696.9 634.08,-696.9 628.62,-696.9"></path>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d" class="edge">
+<title>true_dummy_down_left_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;id_fe54a277_c909_43ef_8b11_cfeeeef8629f:s</title>
+<g id="a_id_5744fc97_a46f_4dc1_9e64_276250ca7e0c@id_3e519b51_6562_4e72_aa67_e3c0567d548d"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-696.98C628.56,-699.64 628.56,-768.29 628.56,-795.54"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="625.76,-795.5 628.56,-803.5 631.36,-795.5 625.76,-795.5"></polygon>
+</a>
+</g>
+</g>
+<!-- end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="node29" class="node">
+<title>end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="628.56" cy="-689.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main" class="edge">
+<title>false_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M538.63,-689.4C541.31,-689.4 625.86,-689.4 628.5,-689.4"></path>
+</a>
+</g>
+</g>
+<!-- id_9971cc98_498e_4a4f_acdd_6440590b4ff8 -->
+<g id="id_9971cc98_498e_4a4f_acdd_6440590b4ff8#Call" class="node">
+<title>id_9971cc98_498e_4a4f_acdd_6440590b4ff8</title>
+<g id="a_id_9971cc98_498e_4a4f_acdd_6440590b4ff8#Call"><a title="Analisis(nilai, n)">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="707.04,-636.3 550.08,-636.3 550.08,-607.5 707.04,-607.5 707.04,-636.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-618.3" font-family="Fira Mono" font-size="12.00" fill="white">Analisis(nilai, n)</text>
+</a>
+</g>
+</g>
+<!-- end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f&#45;&gt;id_9971cc98_498e_4a4f_acdd_6440590b4ff8 -->
+<g id="id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main" class="edge">
+<title>end_dummy_down_id_fe54a277_c909_43ef_8b11_cfeeeef8629f-&gt;id_9971cc98_498e_4a4f_acdd_6440590b4ff8</title>
+<g id="a_id_fe54a277_c909_43ef_8b11_cfeeeef8629f@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-689.35C628.56,-688.17 628.56,-665.74 628.56,-647.07"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-647.18 628.56,-639.18 625.76,-647.18 631.36,-647.18"></polygon>
+</a>
+</g>
+</g>
+<!-- id_51179ac8_2a53_404b_b2de_e596a9f8c728 -->
+<g id="id_51179ac8_2a53_404b_b2de_e596a9f8c728#Output" class="node">
+<title>id_51179ac8_2a53_404b_b2de_e596a9f8c728</title>
+<g id="a_id_51179ac8_2a53_404b_b2de_e596a9f8c728#Output"><a title="&quot;
+=======================================================================================&quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="847.85,-568.8 409.27,-568.8 253.08,-540 1004.04,-540 847.85,-568.8"></polygon>
+<text text-anchor="middle" x="628.56" y="-558" font-family="Fira Mono" font-size="12.00" fill="white">"</text>
+<text text-anchor="middle" x="628.56" y="-543.6" font-family="Fira Mono" font-size="12.00" fill="white">======================================================================================="</text>
+</a>
+</g>
+</g>
+<!-- id_9971cc98_498e_4a4f_acdd_6440590b4ff8&#45;&gt;id_51179ac8_2a53_404b_b2de_e596a9f8c728 -->
+<g id="id_9971cc98_498e_4a4f_acdd_6440590b4ff8@fun-main" class="edge">
+<title>id_9971cc98_498e_4a4f_acdd_6440590b4ff8:s-&gt;id_51179ac8_2a53_404b_b2de_e596a9f8c728:n</title>
+<g id="a_id_9971cc98_498e_4a4f_acdd_6440590b4ff8@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-607.5C628.56,-607.5 628.56,-591.22 628.56,-579.77"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-579.81 628.56,-571.81 625.76,-579.81 631.36,-579.81"></polygon>
+</a>
+</g>
+</g>
+<!-- id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16 -->
+<g id="id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16#Output" class="node">
+<title>id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16</title>
+<g id="a_id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16#Output"><a title="&quot;Masukkan NIM yang ingin dicari: &quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="716.02,-501.3 541.1,-501.3 478.8,-472.5 778.32,-472.5 716.02,-501.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-483.3" font-family="Fira Mono" font-size="12.00" fill="white">"Masukkan NIM yang ingin dicari: "</text>
+</a>
+</g>
+</g>
+<!-- id_51179ac8_2a53_404b_b2de_e596a9f8c728&#45;&gt;id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16 -->
+<g id="id_51179ac8_2a53_404b_b2de_e596a9f8c728@fun-main" class="edge">
+<title>id_51179ac8_2a53_404b_b2de_e596a9f8c728:s-&gt;id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16:n</title>
+<g id="a_id_51179ac8_2a53_404b_b2de_e596a9f8c728@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-540.02C628.56,-540.02 628.56,-523.26 628.56,-511.75"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-512.14 628.56,-504.14 625.76,-512.14 631.36,-512.14"></polygon>
+</a>
+</g>
+</g>
+<!-- id_fd7db386_addf_49f2_a9be_34b2cc2d5d84 -->
+<g id="id_fd7db386_addf_49f2_a9be_34b2cc2d5d84#Input" class="node">
+<title>id_fd7db386_addf_49f2_a9be_34b2cc2d5d84</title>
+<g id="a_id_fd7db386_addf_49f2_a9be_34b2cc2d5d84#Input"><a title="cariNIM">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="607.54,-405 649.58,-405 664.56,-433.8 592.56,-433.8 607.54,-405"></polygon>
+<text text-anchor="middle" x="628.56" y="-415.8" font-family="Fira Mono" font-size="12.00" fill="white">cariNIM</text>
+</a>
+</g>
+</g>
+<!-- id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16&#45;&gt;id_fd7db386_addf_49f2_a9be_34b2cc2d5d84 -->
+<g id="id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16@fun-main" class="edge">
+<title>id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16:s-&gt;id_fd7db386_addf_49f2_a9be_34b2cc2d5d84:n</title>
+<g id="a_id_95d8f20c_3ce8_44fb_afa3_de0dce6a2d16@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-472.68C628.56,-472.68 628.56,-455.91 628.56,-444.38"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-444.76 628.56,-436.76 625.76,-444.76 631.36,-444.76"></polygon>
+</a>
+</g>
+</g>
+<!-- id_9b7c517c_e379_48ec_af68_b0b5d1faa23c -->
+<g id="id_9b7c517c_e379_48ec_af68_b0b5d1faa23c#Assign" class="node">
+<title>id_9b7c517c_e379_48ec_af68_b0b5d1faa23c</title>
+<g id="a_id_9b7c517c_e379_48ec_af68_b0b5d1faa23c#Assign"><a title="indexCari = LinearSearch(nim, cariNIM, n)">
+<polygon fill="#002a3a" stroke="#001117" stroke-width="0.5" points="798.12,-366.3 459,-366.3 459,-337.5 798.12,-337.5 798.12,-366.3"></polygon>
+<text text-anchor="middle" x="628.56" y="-348.3" font-family="Fira Mono" font-size="12.00" fill="white">indexCari = LinearSearch(nim, cariNIM, n)</text>
+</a>
+</g>
+</g>
+<!-- id_fd7db386_addf_49f2_a9be_34b2cc2d5d84&#45;&gt;id_9b7c517c_e379_48ec_af68_b0b5d1faa23c -->
+<g id="id_fd7db386_addf_49f2_a9be_34b2cc2d5d84@fun-main" class="edge">
+<title>id_fd7db386_addf_49f2_a9be_34b2cc2d5d84:s-&gt;id_9b7c517c_e379_48ec_af68_b0b5d1faa23c:n</title>
+<g id="a_id_fd7db386_addf_49f2_a9be_34b2cc2d5d84@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-405.07C628.56,-405.07 628.56,-388.77 628.56,-377.31"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-377.33 628.56,-369.33 625.76,-377.33 631.36,-377.33"></polygon>
+</a>
+</g>
+</g>
+<!-- id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_cac7726b_4cfb_4ac8_ac55_2cd438beda38#If" class="node">
+<title>id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38#If"><a title="indexCari != -1">
+<polygon fill="#ffd166" stroke="#8f6400" stroke-width="0.5" points="628.56,-302.4 551.16,-284.4 628.56,-266.4 705.96,-284.4 628.56,-302.4"></polygon>
+<text text-anchor="middle" x="628.56" y="-280.8" font-family="Fira Mono" font-size="12.00">indexCari != -1</text>
+</a>
+</g>
+</g>
+<!-- id_9b7c517c_e379_48ec_af68_b0b5d1faa23c&#45;&gt;id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_9b7c517c_e379_48ec_af68_b0b5d1faa23c@fun-main" class="edge">
+<title>id_9b7c517c_e379_48ec_af68_b0b5d1faa23c:s-&gt;id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:n</title>
+<g id="a_id_9b7c517c_e379_48ec_af68_b0b5d1faa23c@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-337.5C628.56,-337.5 628.56,-323.44 628.56,-313.11"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-313.41 628.56,-305.41 625.76,-313.41 631.36,-313.41"></polygon>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="node36" class="node">
+<title>true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="988.56" cy="-284.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_0172729c_b40c_4082_aa0d_70e639726c1a" class="edge">
+<title>id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:e-&gt;true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_0172729c_b40c_4082_aa0d_70e639726c1a"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M705.89,-284.4C705.89,-284.4 984.16,-284.4 988.51,-284.4"></path>
+</a>
+</g>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_0172729c_b40c_4082_aa0d_70e639726c1a-taillabel"><a title=" ">
+<text text-anchor="middle" x="713.66" y="-287.4" font-family="Fira Mono" font-size="10.00" fill="forestgreen">true</text>
+</a>
+</g>
+</g>
+<!-- false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="node37" class="node">
+<title>false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="268.56" cy="-284.4" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0" class="edge">
+<title>id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:w-&gt;false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M551.23,-284.4C551.23,-284.4 272.96,-284.4 268.61,-284.4"></path>
+</a>
+</g>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0-taillabel"><a title=" ">
+<text text-anchor="middle" x="541.79" y="-287.4" font-family="Fira Mono" font-size="10.00" fill="red">false</text>
+</a>
+</g>
+</g>
+<!-- id_52f16cb2_2e22_4a5c_a936_2a77d3340f98 -->
+<g id="id_52f16cb2_2e22_4a5c_a936_2a77d3340f98#Output" class="node">
+<title>id_52f16cb2_2e22_4a5c_a936_2a77d3340f98</title>
+<g id="a_id_52f16cb2_2e22_4a5c_a936_2a77d3340f98#Output"><a title="&quot;DATA DITEMUKAN!&quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="1036.71,-231.3 940.41,-231.3 906.12,-202.5 1071,-202.5 1036.71,-231.3"></polygon>
+<text text-anchor="middle" x="988.56" y="-213.3" font-family="Fira Mono" font-size="12.00" fill="white">"DATA DITEMUKAN!"</text>
+</a>
+</g>
+</g>
+<!-- true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;id_52f16cb2_2e22_4a5c_a936_2a77d3340f98 -->
+<g id="id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_0172729c_b40c_4082_aa0d_70e639726c1a" class="edge">
+<title>true_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38-&gt;id_52f16cb2_2e22_4a5c_a936_2a77d3340f98:n</title>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_0172729c_b40c_4082_aa0d_70e639726c1a"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.56,-284.25C988.56,-282.06 988.56,-256.93 988.56,-242.01"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="991.36,-242.1 988.56,-234.1 985.76,-242.1 991.36,-242.1"></polygon>
+</a>
+</g>
+</g>
+<!-- id_603962b5_0931_49df_88c3_2083c9b7e896 -->
+<g id="id_603962b5_0931_49df_88c3_2083c9b7e896#Output" class="node">
+<title>id_603962b5_0931_49df_88c3_2083c9b7e896</title>
+<g id="a_id_603962b5_0931_49df_88c3_2083c9b7e896#Output"><a title="&quot;ERROR: Mahasiswa dengan NIM &quot; + cariNIM + &quot; TIDAK DITEMUKAN!&quot;">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="425.4,-231.3 111.72,-231.3 0,-202.5 537.12,-202.5 425.4,-231.3"></polygon>
+<text text-anchor="middle" x="268.56" y="-213.3" font-family="Fira Mono" font-size="12.00" fill="white">"ERROR: Mahasiswa dengan NIM " + cariNIM + " TIDAK DITEMUKAN!"</text>
+</a>
+</g>
+</g>
+<!-- false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;id_603962b5_0931_49df_88c3_2083c9b7e896 -->
+<g id="id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0" class="edge">
+<title>false_dummy_up_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38-&gt;id_603962b5_0931_49df_88c3_2083c9b7e896:n</title>
+<g id="a_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M268.56,-284.25C268.56,-282.06 268.56,-256.76 268.56,-241.93"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="271.36,-242.3 268.56,-234.3 265.76,-242.3 271.36,-242.3"></polygon>
+</a>
+</g>
+</g>
+<!-- id_c6784c68_c6bd_431b_872f_2b83024e0e42 -->
+<g id="id_c6784c68_c6bd_431b_872f_2b83024e0e42#Output" class="node">
+<title>id_c6784c68_c6bd_431b_872f_2b83024e0e42</title>
+<g id="a_id_c6784c68_c6bd_431b_872f_2b83024e0e42#Output"><a title="&quot;NIM: &quot; + nim[indexCari] + &quot; | Nilai Ujian: &quot; + nilai[indexCari]">
+<polygon fill="#015692" stroke="#002a3a" stroke-width="0.5" points="1150.03,-163.8 827.09,-163.8 712.08,-135 1265.04,-135 1150.03,-163.8"></polygon>
+<text text-anchor="middle" x="988.56" y="-145.8" font-family="Fira Mono" font-size="12.00" fill="white">"NIM: " + nim[indexCari] + " | Nilai Ujian: " + nilai[indexCari]</text>
+</a>
+</g>
+</g>
+<!-- id_52f16cb2_2e22_4a5c_a936_2a77d3340f98&#45;&gt;id_c6784c68_c6bd_431b_872f_2b83024e0e42 -->
+<g id="id_52f16cb2_2e22_4a5c_a936_2a77d3340f98@id_0172729c_b40c_4082_aa0d_70e639726c1a" class="edge">
+<title>id_52f16cb2_2e22_4a5c_a936_2a77d3340f98:s-&gt;id_c6784c68_c6bd_431b_872f_2b83024e0e42:n</title>
+<g id="a_id_52f16cb2_2e22_4a5c_a936_2a77d3340f98@id_0172729c_b40c_4082_aa0d_70e639726c1a"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.56,-202.73C988.56,-202.73 988.56,-185.96 988.56,-174.43"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="991.36,-174.81 988.56,-166.81 985.76,-174.81 991.36,-174.81"></polygon>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="node41" class="node">
+<title>true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="988.56" cy="-81.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_c6784c68_c6bd_431b_872f_2b83024e0e42&#45;&gt;true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_c6784c68_c6bd_431b_872f_2b83024e0e42@id_0172729c_b40c_4082_aa0d_70e639726c1a" class="edge">
+<title>id_c6784c68_c6bd_431b_872f_2b83024e0e42:s-&gt;true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:n</title>
+<g id="a_id_c6784c68_c6bd_431b_872f_2b83024e0e42@id_0172729c_b40c_4082_aa0d_70e639726c1a"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.56,-135.01C988.56,-135.01 988.56,-81.9 988.56,-81.9"></path>
+</a>
+</g>
+</g>
+<!-- false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="node42" class="node">
+<title>false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<ellipse fill="black" stroke="black" stroke-width="0.5" cx="268.56" cy="-81.9" rx="0" ry="0"></ellipse>
+</g>
+<!-- id_603962b5_0931_49df_88c3_2083c9b7e896&#45;&gt;false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_603962b5_0931_49df_88c3_2083c9b7e896@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0" class="edge">
+<title>id_603962b5_0931_49df_88c3_2083c9b7e896:s-&gt;false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:n</title>
+<g id="a_id_603962b5_0931_49df_88c3_2083c9b7e896@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M268.56,-202.53C268.56,-202.53 268.56,-81.9 268.56,-81.9"></path>
+</a>
+</g>
+</g>
+<!-- end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38#IfEnd" class="node flowrun-not-selectable">
+<title>end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38#IfEnd"><a title=" ">
+<ellipse fill="#ffd166" stroke="#8f6400" stroke-width="0.5" cx="628.56" cy="-81.9" rx="7.2" ry="7.2"></ellipse>
+</a>
+</g>
+</g>
+<!-- true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_c6784c68_c6bd_431b_872f_2b83024e0e42@id_0172729c_b40c_4082_aa0d_70e639726c1a" class="edge">
+<title>true_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38-&gt;end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_id_c6784c68_c6bd_431b_872f_2b83024e0e42@id_0172729c_b40c_4082_aa0d_70e639726c1a"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M988.49,-81.9C983.71,-81.9 718.42,-81.9 646.42,-81.9"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="646.67,-79.1 638.67,-81.9 646.67,-84.7 646.67,-79.1"></polygon>
+</a>
+</g>
+</g>
+<!-- false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38 -->
+<g id="id_603962b5_0931_49df_88c3_2083c9b7e896@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0" class="edge">
+<title>false_dummy_down_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38-&gt;end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38</title>
+<g id="a_id_603962b5_0931_49df_88c3_2083c9b7e896@id_23a5fdf6_a764_419b_8fcc_03cabae41fe0"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M268.63,-81.9C273.41,-81.9 538.7,-81.9 610.7,-81.9"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="610.45,-84.7 618.45,-81.9 610.45,-79.1 610.45,-84.7"></polygon>
+</a>
+</g>
+</g>
+<!-- id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="id_889564e7_2b49_4868_8362_fbcdfea0ae32#Return" class="node">
+<title>id_889564e7_2b49_4868_8362_fbcdfea0ae32</title>
+<g id="a_id_889564e7_2b49_4868_8362_fbcdfea0ae32#Return"><a title="End">
+<ellipse fill="#8de4ff" stroke="#00799e" stroke-width="0.5" cx="628.56" cy="-14.4" rx="36" ry="14.4"></ellipse>
+<text text-anchor="middle" x="628.56" y="-10.8" font-family="Fira Mono" font-size="12.00" fill="#982b13">End</text>
+</a>
+</g>
+</g>
+<!-- end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38&#45;&gt;id_889564e7_2b49_4868_8362_fbcdfea0ae32 -->
+<g id="end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@fun-main" class="edge">
+<title>end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38:s-&gt;id_889564e7_2b49_4868_8362_fbcdfea0ae32:n</title>
+<g id="a_end_id_cac7726b_4cfb_4ac8_ac55_2cd438beda38@fun-main"><a title=" ">
+<path fill="none" stroke="#0a1931" stroke-width="2" d="M628.56,-74.93C628.56,-74.93 628.56,-53.09 628.56,-39.45"></path>
+<polygon fill="#0a1931" stroke="#0a1931" stroke-width="2" points="631.36,-39.76 628.56,-31.76 625.76,-39.76 631.36,-39.76"></polygon>
+</a>
+</g>
+</g>
+</g>
+</svg></div>
+            <div class="flowrun-debug-vars"></div>
+        </div>
+
+        <div class="flowrun-output flowrun--panel">
+            <div class="flowrun-scratchpad">
+                <div class="flowrun-output-statement"></div>
+                <div class="flowrun-output-syntax"></div>
+                <div class="flowrun-output-runtime"><div class="flowrun-output-help"><samp>[Started at: 2026-08-08 12:14:38]</samp></div><samp>Masukkan Nilai Untuk NIM: 1001, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1002, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1003, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1004, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1005, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1006, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1007, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1008, Nilai : </samp><div><samp>You entered nilai[i] = 1</samp></div><samp>Masukkan Nilai Untuk NIM: 1009, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>Masukkan Nilai Untuk NIM: 1010, Nilai : </samp><div><samp>You entered nilai[i] = 6</samp></div><samp>Masukkan Nilai Untuk NIM: 1011, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>Masukkan Nilai Untuk NIM: 1012, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>Masukkan Nilai Untuk NIM: 1013, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>Masukkan Nilai Untuk NIM: 1014, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>Masukkan Nilai Untuk NIM: 1015, Nilai : </samp><div><samp>You entered nilai[i] = 4</samp></div><samp>\n === DAFTAR NILAI YANG TELAH YANG TELAH DIURUTKAN ===</samp><br><samp>Peringkat 1 NIM: 1001 Nilai: 1</samp><br><samp>Peringkat 2 NIM: 1009 Nilai: 4</samp><br><samp>Peringkat 3 NIM: 1002 Nilai: 1</samp><br><samp>Peringkat 4 NIM: 1010 Nilai: 6</samp><br><samp>Peringkat 5 NIM: 1003 Nilai: 1</samp><br><samp>Peringkat 6 NIM: 1011 Nilai: 4</samp><br><samp>Peringkat 7 NIM: 1004 Nilai: 1</samp><br><samp>Peringkat 8 NIM: 1012 Nilai: 4</samp><br><samp>Peringkat 9 NIM: 1005 Nilai: 1</samp><br><samp>Peringkat 10 NIM: 1013 Nilai: 4</samp><br><samp>Peringkat 11 NIM: 1006 Nilai: 1</samp><br><samp>Peringkat 12 NIM: 1014 Nilai: 4</samp><br><samp>Peringkat 13 NIM: 1007 Nilai: 1</samp><br><samp>Peringkat 14 NIM: 1015 Nilai: 4</samp><br><samp>Peringkat 15 NIM: 1008 Nilai: 1</samp><br><samp>=== STATISTIK NILAI MAHASISWA ===</samp><br><samp>Nilai Tertinggi   : 6</samp><br><samp>Nilai Terendah   : 1</samp><br><samp>Rata-Rata            : 2.533333333333333</samp><br><samp>Jumlah Lulus       : 0 Mahasiswa</samp><br><samp>Jumlah Tidak Lulus : 15 Mahasiswa</samp><br><samp>\n=======================================================================================</samp><br><samp>Masukkan NIM yang ingin dicari: </samp><br><div><samp>You entered cariNIM = 1001</samp></div><samp>DATA DITEMUKAN!</samp><br><samp>NIM: 1001 | Nilai Ujian: 1</samp><br><div class="flowrun-output-help"><samp>[Finished at: 2026-08-08 12:14:53]</samp></div><div class="flowrun-output-help"><samp>[Execution time: 15.075S]</samp></div></div>
+            </div>
+            <button class="flowrun-btn-clear-output" title="Clear Output"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"></path></svg> </button>
+        </div>
+
+        <div class="flowrun-gen-code flowrun--panel line-numbers">
+            <pre class="flowrun-code line-numbers language-cpp" data-line="" tabindex="0"><code class="language-cpp"><span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdbool.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;cmath&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> nim<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">15</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    nim<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">int</span> nilai<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">15</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">int</span> indexCari <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> cariNIM <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token number">15</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> tempn <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    tempn <span class="token operator">=</span> tempn <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    nim<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> tempn<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Masukkan Nilai Untuk NIM: "</span> <span class="token operator">+</span> tempn <span class="token operator">+</span> <span class="token string">", Nilai : "</span><span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"="</span><span class="token punctuation">;</span>
+    cin <span class="token operator">&gt;&gt;</span> nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">BubbleSort</span><span class="token punctuation">(</span>nim<span class="token punctuation">,</span> nilai<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"\n === DAFTAR NILAI YANG TELAH YANG TELAH DIURUTKAN ==="</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Peringkat "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" NIM: "</span> <span class="token operator">+</span> nim<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" Nilai: "</span> <span class="token operator">+</span> nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">Analisis</span><span class="token punctuation">(</span>nilai<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"\n======================================================================================="</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Masukkan NIM yang ingin dicari: "</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"="</span><span class="token punctuation">;</span>
+  cin <span class="token operator">&gt;&gt;</span> cariNIM<span class="token punctuation">;</span>
+  indexCari <span class="token operator">=</span> <span class="token function">LinearSearch</span><span class="token punctuation">(</span>nim<span class="token punctuation">,</span> cariNIM<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>indexCari <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"DATA DITEMUKAN!"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"NIM: "</span> <span class="token operator">+</span> nim<span class="token punctuation">[</span>indexCari<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" | Nilai Ujian: "</span> <span class="token operator">+</span> nilai<span class="token punctuation">[</span>indexCari<span class="token punctuation">]</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"ERROR: Mahasiswa dengan NIM "</span> <span class="token operator">+</span> cariNIM <span class="token operator">+</span> <span class="token string">" TIDAK DITEMUKAN!"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">BubbleSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">*</span> nim<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">*</span> nilai<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> tempNilai <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> tempNIM <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span> <span class="token operator">-</span> i<span class="token punctuation">)</span> <span class="token operator">-</span> i<span class="token punctuation">;</span> j <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>nilai<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nilai<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        tempNilai <span class="token operator">=</span> nilai<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        nilai<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> nilai<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        nilai<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> tempNilai<span class="token punctuation">;</span>
+        tempNIM <span class="token operator">=</span> nim<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        nim<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> nim<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        nim<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> tempNIM<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">LinearSearch</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">*</span> nim<span class="token punctuation">,</span> <span class="token keyword">int</span> cariNIM<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  indexCari <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nim<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> cariNIM<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      indexCari <span class="token operator">=</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> indexCari<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">Analisis</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">*</span> nilai<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> max <span class="token operator">=</span> nilai<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> min <span class="token operator">=</span> nilai<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> total <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> lulus <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> tidakLulus <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">double</span> rataRata <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    total <span class="token operator">=</span> total <span class="token operator">+</span> nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&gt;</span> max<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      max <span class="token operator">=</span> nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> min<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      min <span class="token operator">=</span> nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nilai<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&gt;=</span> <span class="token number">60</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      lulus <span class="token operator">=</span> lulus <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      tidakLulus <span class="token operator">=</span> tidakLulus <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  rataRata <span class="token operator">=</span> total <span class="token operator">/</span> <span class="token punctuation">(</span>n <span class="token operator">*</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"=== STATISTIK NILAI MAHASISWA ==="</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Nilai Tertinggi   : "</span> <span class="token operator">+</span> max <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Nilai Terendah   : "</span> <span class="token operator">+</span> min <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Rata-Rata            : "</span> <span class="token operator">+</span> rataRata <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Jumlah Lulus       : "</span> <span class="token operator">+</span> lulus <span class="token operator">+</span> <span class="token string">" Mahasiswa"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+  cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Jumlah Tidak Lulus : "</span> <span class="token operator">+</span> tidakLulus <span class="token operator">+</span> <span class="token string">" Mahasiswa"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+            <div class="flowrun-gen-code-btns">
+                <button class="flowrun-btn-copy-gencode" title="Copy Generated Code"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m193-479 155 155q11 11 11 28t-11 28q-11 11-28 11t-28-11L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l184-184q12-12 28.5-12t28.5 12q12 12 12 28.5T349-635L193-479Zm574-2L612-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L668-268q-12 12-28 11.5T612-269q-12-12-12-28.5t12-28.5l155-155Z"></path></svg> </button>
+                <select class="flowrun-gencode-lang"><option value="java">java</option><option value="javascript">javascript</option><option value="python">python</option><option value="scala">scala</option><option value="c#">c#</option><option value="c++">c++</option><option value="c">c</option><option value="kotlin">kotlin</option><option value="php">php</option><option value="swift">swift</option><option value="ruby">ruby</option></select>
+            </div>
+        </div>
+
+        <!-- this whole div will be deleted -->
+        
+
+        <!-- context menus -->
+        
+
+        
+
+        <dialog class="flowrun-config">
+            <button class="flowrun-btn-config-close"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"></path></svg></button>
+            <div class="flowrun-config-layout">
+                <label>
+                    <input class="flowrun-cb-show-functions" type="checkbox">
+                    Show functions
+                </label>
+                <label>
+                    <input class="flowrun-cb-show-gen-code" type="checkbox">
+                    Show generated code
+                </label>
+                <label>
+                    <input class="flowrun-cb-show-debug-vars" type="checkbox">
+                    Show debug variables
+                </label>
+                <label>
+                    <input class="flowrun-cb-show-io-btns" type="checkbox">
+                    Show import/export buttons
+                </label>
+                <label>
+                    <input class="flowrun-cb-use-input-prompt" type="checkbox">
+                    Use input prompt
+                </label>
+                <label>
+                    <input class="flowrun-cb-echo-entered-value" type="checkbox">
+                    Echo entered value
+                </label>
+            </div>
+        </dialog>
+    </div></div></main><footer class="pico container grid"><aside><nav><ul><li><b>Quick Links</b></li></ul><ul><li><a href="https://flowrun.io/">Home</a></li><li><a href="https://flowrun.io/explore">Explore</a></li><li><a href="https://flowrun.io/blog">Blog</a></li><li><a href="https://flowrun.io/docs">Docs</a></li><li><a href="https://flowrun.io/pricing">Pricing</a></li><li><a href="https://flowrun.io/about">About</a></li></ul></nav></aside><aside><nav><ul><li><b>Misc</b></li></ul><ul><li><a href="https://flowrun.io/faq">FAQ</a></li><li><a href="https://flowrun.io/contact-us">Contact Us</a></li><li><a href="https://flowrun.io/donate">Donate</a></li><li><a href="https://flowrun.io/privacy-policy">Privacy Policy</a></li><li><a href="https://flowrun.io/terms-and-conditions">Terms &amp; Conditions</a></li><li><a href="https://flowrun.io/refund-policy">Refund Policy</a></li></ul></nav></aside><aside><nav><ul><li><b>Social</b></li></ul><ul><li><a href="https://discord.gg/3fJA6DfHbA" target="_blank">Discord</a></li><li><a href="https://github.com/sacode387/FlowRun" target="_blank">GitHub</a></li><li><a href="https://twitter.com/FlowRun4" target="_blank">Twitter</a></li></ul></nav></aside></footer>
+    <template id="flowrun-template"></template>
+  
+        <script data-name="BMC-Widget" data-cfasync="false" src="./Free Flowchart Maker - FlowRun_files/widget.prod.min.js.download" data-id="sake" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF6937" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+      <div class="flowrun-edge-context-menu flowrun-context-menu" style="left: 1107px; top: 313px;">
+            <button class="flowrun-paste-stmt" disabled=""> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"></path></svg> Paste</button>
+            <button class="flowrun-add-declare"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-280q-17 0-28.5-11.5T120-320v-320q0-17 11.5-28.5T160-680h640q17 0 28.5 11.5T840-640v40q0 17-11.5 28.5T800-560q-17 0-28.5-11.5T760-600H200v240h320q17 0 28.5 11.5T560-320q0 17-11.5 28.5T520-280H160Zm40-80v-240 240Zm560 80h-80q-17 0-28.5-11.5T640-320q0-17 11.5-28.5T680-360h80v-80q0-17 11.5-28.5T800-480q17 0 28.5 11.5T840-440v80h80q17 0 28.5 11.5T960-320q0 17-11.5 28.5T920-280h-80v80q0 17-11.5 28.5T800-160q-17 0-28.5-11.5T760-200v-80Z"></path></svg> Declare</button>
+            <button class="flowrun-add-assign"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m233-280 76 76q12 12 11.5 28T308-148q-12 11-28 11.5T252-148L108-292q-6-6-8.5-13T97-320q0-8 2.5-15t8.5-13l144-144q11-11 27.5-11t28.5 11q12 12 12 28.5T308-435l-75 75h567q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280H233Zm494-320H160q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680h567l-76-76q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L708-468q-11 11-27.5 11T652-468q-12-12-12-28.5t12-28.5l75-75Z"></path></svg> Assign</button>
+            <button class="flowrun-add-input"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-200q-33 0-56.5-23.5T80-280v-400q0-33 23.5-56.5T160-760h640q33 0 56.5 23.5T880-680v400q0 33-23.5 56.5T800-200H160Zm0-80h640v-400H160v400Zm200-40h240q17 0 28.5-11.5T640-360q0-17-11.5-28.5T600-400H360q-17 0-28.5 11.5T320-360q0 17 11.5 28.5T360-320Zm-200 40v-400 400Zm80-280q17 0 28.5-11.5T280-600q0-17-11.5-28.5T240-640q-17 0-28.5 11.5T200-600q0 17 11.5 28.5T240-560Zm120 0q17 0 28.5-11.5T400-600q0-17-11.5-28.5T360-640q-17 0-28.5 11.5T320-600q0 17 11.5 28.5T360-560Zm120 0q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm120 0q17 0 28.5-11.5T640-600q0-17-11.5-28.5T600-640q-17 0-28.5 11.5T560-600q0 17 11.5 28.5T600-560Zm120 0q17 0 28.5-11.5T760-600q0-17-11.5-28.5T720-640q-17 0-28.5 11.5T680-600q0 17 11.5 28.5T720-560ZM240-440q17 0 28.5-11.5T280-480q0-17-11.5-28.5T240-520q-17 0-28.5 11.5T200-480q0 17 11.5 28.5T240-440Zm120 0q17 0 28.5-11.5T400-480q0-17-11.5-28.5T360-520q-17 0-28.5 11.5T320-480q0 17 11.5 28.5T360-440Zm120 0q17 0 28.5-11.5T520-480q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480q0 17 11.5 28.5T480-440Zm120 0q17 0 28.5-11.5T640-480q0-17-11.5-28.5T600-520q-17 0-28.5 11.5T560-480q0 17 11.5 28.5T600-440Zm120 0q17 0 28.5-11.5T760-480q0-17-11.5-28.5T720-520q-17 0-28.5 11.5T680-480q0 17 11.5 28.5T720-440Z"></path></svg> Input</button>
+            <button class="flowrun-add-output"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M400-200v-80H160q-33 0-56.5-23.5T80-360v-400q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v400q0 33-23.5 56.5T800-280H560v80h40q17 0 28.5 11.5T640-160q0 17-11.5 28.5T600-120H360q-17 0-28.5-11.5T320-160q0-17 11.5-28.5T360-200h40ZM160-360h640v-400H160v400Zm0 0v-400 400Z"></path></svg> Output</button>
+            <button class="flowrun-add-if"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-664v64q0 17-11.5 28.5T200-560q-17 0-28.5-11.5T160-600v-160q0-17 11.5-28.5T200-800h160q17 0 28.5 11.5T400-760q0 17-11.5 28.5T360-720h-64l201 201q11 11 17 25.5t6 30.5v263q0 17-11.5 28.5T480-160q-17 0-28.5-11.5T440-200v-264L240-664Zm480 0-98 99q-12 12-28.5 12T565-565q-12-12-12-29t12-29l99-97h-64q-17 0-28.5-11.5T560-760q0-17 11.5-28.5T600-800h160q17 0 28.5 11.5T800-760v160q0 17-11.5 28.5T760-560q-17 0-28.5-11.5T720-600v-64Z"></path></svg> If</button>
+            <button class="flowrun-add-while"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M80-520q0-117 81.5-198.5T360-800h240q117 0 198.5 81.5T880-520q0 103-66 181t-168 95q-18 3-32-8t-14-28q0-17 13.5-29t31.5-16q69-16 112-70.5T800-520q0-83-58.5-141.5T600-720H360q-83 0-141.5 58.5T160-520q0 83 58.5 141.5T360-320h7l-36-36q-11-11-11-27.5t12-28.5q11-11 28-11t28 11l104 104q12 12 12 28t-12 28L388-148q-11 11-27.5 11T332-148q-12-12-12-28.5t12-28.5l35-35h-7q-117 0-198.5-81.5T80-520Z"></path></svg> While</button>
+            <button class="flowrun-add-do-while"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M80-520q0-117 81.5-198.5T360-800h240q117 0 198.5 81.5T880-520q0 103-66 181t-168 95q-18 3-32-8t-14-28q0-17 13.5-29t31.5-16q69-16 112-70.5T800-520q0-83-58.5-141.5T600-720H360q-83 0-141.5 58.5T160-520q0 83 58.5 141.5T360-320h7l-36-36q-11-11-11-27.5t12-28.5q11-11 28-11t28 11l104 104q12 12 12 28t-12 28L388-148q-11 11-27.5 11T332-148q-12-12-12-28.5t12-28.5l35-35h-7q-117 0-198.5-81.5T80-520Z"></path></svg> Do While</button>
+            <button class="flowrun-add-for"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M80-520q0-117 81.5-198.5T360-800h240q117 0 198.5 81.5T880-520q0 103-66 181t-168 95q-18 3-32-8t-14-28q0-17 13.5-29t31.5-16q69-16 112-70.5T800-520q0-83-58.5-141.5T600-720H360q-83 0-141.5 58.5T160-520q0 83 58.5 141.5T360-320h7l-36-36q-11-11-11-27.5t12-28.5q11-11 28-11t28 11l104 104q12 12 12 28t-12 28L388-148q-11 11-27.5 11T332-148q-12-12-12-28.5t12-28.5l35-35h-7q-117 0-198.5-81.5T80-520Z"></path></svg> For loop</button>
+            <button class="flowrun-add-call"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M221-120q-45 0-73-24t-28-64q0-32 17-51.5t43-19.5q25 0 42.5 17t17.5 41q0 5-.5 9t-1.5 9q5-1 8.5-5.5T252-221l62-339h-74q-17 0-28.5-11.5T200-600q0-17 11.5-28.5T240-640h89l21-114q7-38 37.5-62t72.5-24q44 0 72 26t28 65q0 30-17 49.5T500-680q-25 0-42.5-17T440-739q0-5 .5-9t1.5-9q-6 2-9 6t-5 12l-17 99h149q17 0 28.5 11.5T600-600q0 15-9.5 26T567-561l53 60 53-60q-14-2-23.5-13t-9.5-26q0-17 11.5-28.5T680-640h120q17 0 28.5 11.5T840-600q0 17-11.5 28.5T800-560h-22L673-440l105 120h22q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H680q-17 0-28.5-11.5T640-280q0-15 9.5-26t23.5-13l-53-61-53 61q14 2 23.5 13t9.5 26q0 17-11.5 28.5T560-240H440q-17 0-28.5-11.5T400-280q0-17 11.5-28.5T440-320h22l105-120-105-120h-66l-64 344q-8 45-37 70.5T221-120Z"></path></svg> Call</button>
+            <button class="flowrun-add-comment"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-400h400q17 0 28.5-11.5T720-440q0-17-11.5-28.5T680-480H280q-17 0-28.5 11.5T240-440q0 17 11.5 28.5T280-400Zm0-120h400q17 0 28.5-11.5T720-560q0-17-11.5-28.5T680-600H280q-17 0-28.5 11.5T240-560q0 17 11.5 28.5T280-520Zm0-120h400q17 0 28.5-11.5T720-680q0-17-11.5-28.5T680-720H280q-17 0-28.5 11.5T240-680q0 17 11.5 28.5T280-640ZM160-240q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v623q0 27-24.5 37.5T812-148l-92-92H160Zm594-80 46 45v-525H160v480h594Zm-594 0v-480 480Z"></path></svg> Comment</button>
+        </div><div class="flowrun-node-context-menu flowrun-context-menu" style="left: 1081px; top: 422px;">
+            <button class="flowrun-copy-stmt"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z"></path></svg> Copy</button>
+            <button class="flowrun-delete"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"></path></svg> Delete</button>
+        </div></body></html>

@@ -1,0 +1,38 @@
+
+.logo {
+    display: flex;
+    width: 8rem;
+    height: auto;
+}
+
+.logo-mobile {
+    display: none;
+}
+
+.flowrun-instance {
+    height: calc(100vh - 10rem);
+}
+
+/* index page */
+.features-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.img-lt {
+    width: 30%;
+    opacity: 0.4;
+    margin-right: -20%;
+}
+
+.features-section-images {
+    display: block;
+}
+
+.tutorials-section-images {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+}

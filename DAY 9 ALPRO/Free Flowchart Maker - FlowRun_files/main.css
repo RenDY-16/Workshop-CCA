@@ -1,0 +1,447 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/FiraMono-Regular.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/fonts/FiraMono-Bold.woff) format('woff');
+}
+
+:root {
+    --pico-font-family: 'Poppins', sans-serif;
+    --pico-font-family-monospace: 'Fira Mono', monospace;
+    --pico-border-radius: 2rem;
+    --pico-form-element-spacing-vertical: 0.4rem;
+    --pico-form-element-spacing-horizontal: 0.8em;
+
+    --clr-danger: hsl(12, 74%, 54%);
+
+    /* editor overrides */
+    --flowrun-danger: var(--clr-danger);
+    --flowrun-font-monospace: var(--pico-font-family-monospace);
+    --flowrun-font-color: #000;
+    --flowrun-fun-chooser-bg-color: var(--pico-secondary-background);
+    --flowrun-fun-chooser-hover-color: var(--pico-secondary-hover-background);
+    --flowrun-btn-fun-add-hover-color: var(--pico-secondary-hover-background);
+    --flowrun-ctx-menu-bg-color: var(--pico-secondary-background);
+    --flowrun-ctx-menu-color: var(--pico-secondary-inverse);
+}
+
+
+/*****************************/
+/* utilities */
+
+.flex-centered {
+    display: flex;
+    align-items: center;
+}
+
+.flex-justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-small {
+    column-gap: 0.5rem;
+}
+
+.gap-standard {
+    column-gap: 1rem;
+}
+
+.gap-big {
+    column-gap: 3rem;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-bigger {
+    font-size: 1.3rem;
+}
+
+.text-clipped {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.layer--1 {
+    z-index: 1;
+}
+
+.layer--2 {
+    z-index: 2;
+}
+
+.flipped--hor {
+    transform: scaleX(-1);
+}
+
+.img--glow:hover {
+    filter: drop-shadow(0px -7px 18px #333);
+}
+
+
+/*****************************/
+/* logo */
+.logo {
+    display: none;
+}
+
+.logo-mobile {
+    display: flex;
+    width: 3rem;
+    height: auto;
+}
+
+
+/*****************************/
+/* buttons */
+.pico button.btn-dense-pill,
+.pico a[role=button].btn-dense-pill {
+    display: flex;
+    padding: 0 .5rem;
+}
+
+.pico button.btn-big,
+.pico a.btn-big {
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: .7rem 1.5rem;
+}
+
+.pico button.btn-medium,
+.pico a.btn-medium {
+    letter-spacing: 0.1em;
+    padding: .5rem 1.1rem;
+}
+
+button.bg-danger,
+a[role="button"].bg-danger {
+    background-color: var(--clr-danger);
+    border-color: var(--clr-danger);
+}
+
+/*****************************/
+/* pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.pagination a {
+    padding: 0 0.5rem;
+}
+
+
+/*****************************/
+/* tutorial icons */
+.inline-icon {
+    height: 24px;
+    fill: var(--flowrun-green);
+    /* svg pa ide fill */
+    vertical-align: middle;
+}
+
+.inline-menu-item {
+    display: inline-flex;
+    gap: 0.5rem;
+    background: var(--flowrun-blue);
+    padding: 0.2rem 0.3rem;
+    align-items: center;
+}
+
+.inline-menu-item .inline-icon svg {
+    fill: var(--flowrun-white);
+}
+
+.inline-menu-item__text {
+    color: var(--flowrun-white);
+    font-family: 'Arial';
+    font-size: 15px;
+}
+
+.inline-diagram-element__ellipse {
+    font-family: 'Fira Mono';
+    background: var(--flowrun-light_blue);
+    border: 1px solid var(--flowrun-light_blue-darker);
+    border-radius: 100%;
+    padding: 5px;
+}
+
+.inline-diagram-element__output {
+    font-family: 'Fira Mono';
+    color: var(--flowrun-white);
+    background: var(--flowrun-blue);
+    display: inline-block;
+    /* https://bennettfeely.com/clippy/ */
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    height: 1.7em;
+    vertical-align: middle;
+}
+
+.inline-diagram-element__output span {
+    padding: 1rem;
+    vertical-align: sub;
+}
+
+.inline-diagram-element__input {
+    font-family: 'Fira Mono';
+    color: var(--flowrun-white);
+    background: var(--flowrun-blue);
+    display: inline-block;
+    /* https://bennettfeely.com/clippy/ */
+    clip-path: polygon(0 1%, 100% 0, 80% 100%, 20% 100%);
+    height: 1.7em;
+    vertical-align: middle;
+}
+
+.inline-diagram-element__input span {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+
+.inline-diagram-element__declare {
+    font-family: 'Fira Mono';
+    color: var(--flowrun-white);
+    background: var(--flowrun-blue);
+    border: 1px solid var(--flowrun-blue-darker);
+    padding: 0.2rem 0.5rem;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.inline-diagram-element__assign {
+    font-family: 'Fira Mono';
+    color: var(--flowrun-white);
+    background: var(--flowrun-blue-darker);
+    padding: 0.2rem 0.5rem;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/******************************/
+/* loading indicators, progress bars */
+.htmx-indicator-spinner {
+    display: inline-block;
+    overflow: hidden;
+    height: 0;
+    width: 0;
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+/* indicator can be the element itself (link),
+    or its child (form's submit button)
+*/
+.htmx-request.htmx-indicator .htmx-indicator-spinner,
+.htmx-request .htmx-indicator .htmx-indicator-spinner {
+    overflow: initial;
+    height: unset;
+    width: unset;
+    opacity: 1;
+}
+
+.htmx-request.htmx-indicator .htmx-indicator-hide,
+.htmx-request .htmx-indicator .htmx-indicator-hide {
+    display: none;
+}
+
+
+/*****************************/
+/* editor */
+.flowrun-instance .flowrun--panel {
+    border-radius: 0.5rem;
+    /* TODO disable shadow in flowrun.css ..*/
+    box-shadow: none;
+}
+
+.flowrun-context-menu>button svg {
+    fill: var(--flowrun-bg-color);
+}
+
+.flowrun-instance button[class^="flowrun-btn"] svg {
+    fill: var(--flowrun-green);
+    width: 1.7rem;
+    height: auto;
+}
+
+/* PicoCSS makes fonts bigger, becomes ugly */
+.flowrun-instance > * {
+    font-size: initial;
+}
+
+/* a bit thicker dotted lines, easier to see*/
+.node.flowrun--selected polygon,
+.node.flowrun--selected ellipse {
+    stroke-width: 5;
+}
+.node.flowrun--to-execute polygon,
+.node.flowrun--to-execute ellipse {
+    stroke-width: 5;
+}
+.node.flowrun--error polygon {
+    stroke-width: 5;
+}
+
+.flowrun-functions-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.flowrun-functions-list label span {
+    color: #FFF;
+}
+
+.flowrun-fun-chooser {
+    overflow: auto;
+    padding: .2rem;
+}
+
+.flowrun-fun-chooser button.flowrun-btn-fun-delete svg {
+    fill: var(--flowrun-danger);
+}
+
+.flowrun-fun-chooser>div {
+    border-radius: 2rem;
+}
+
+pre[class*=language-].flowrun-code {
+    background: var(--flowrun-bg-color) !important;
+}
+
+/* prismjs tweaks.. */
+.line-highlight {
+    /* default ne radi na chrome desktopu iz nekog razloga..... */
+    background: linear-gradient(to right, rgba(41, 39, 48, 0.1) 0%, rgba(17, 16, 21, 0.15) 30%, rgba(41, 39, 48, 0.1) 100%);
+}
+
+.program-meta {
+    background: var(--flowrun-bg-color);
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    padding: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: stretch;
+    justify-content: center;
+}
+
+
+/*****************************/
+/* programs list */
+.programs-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20ch, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.programs-list svg {
+    user-select: none;
+    width: 100%;
+    height: auto;
+    max-height: 30vh;
+}
+
+/* disable Pico CSS styling */
+.programs-list svg a {
+    all: initial;
+}
+
+.programs-list svg * {
+    user-select: none;
+    cursor: pointer;
+}
+
+.programs-list article header {
+    position: relative;
+}
+
+.programs-list article>div {
+    background: var(--pico-contrast-background);
+    border-radius: .5rem;
+}
+
+.program-view-buttons {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    border-radius: 1rem;
+    padding: 0 .4rem;
+}
+
+.program-view-buttons .btn-round {
+    padding: 3px;
+}
+
+/* dont show select border on hover */
+
+.programs-list .node:not(.flowrun-not-selectable):not(.flowrun--selected):hover polygon,
+.programs-list .node:not(.flowrun-not-selectable):not(.flowrun--selected):hover ellipse {
+    stroke: initial;
+    stroke-width: initial;
+    stroke-dasharray: initial;
+    stroke-linejoin: initial;
+}
+
+
+
+/*****************************/
+/* home page */
+.features-section-images {
+    display: none;
+}
+
+.tutorials-section-images {
+    display: none;
+}
+
+
+/*****************************/
+/* tutorials */
+.tutorial-text {
+    position: relative;
+}
+
+/*****************************/
+/* pricing */
+.money-back-guarantee svg {
+    width: 4rem;
+    height: auto;
+}

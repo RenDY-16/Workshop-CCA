@@ -1,0 +1,180 @@
+
+window.addEventListener('load', (event) => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("/service-worker.js");
+    }
+});
+
+
+document.body.addEventListener('htmx:configRequest', (event) => {
+    // send timezone via HTMX
+    // https://stackoverflow.com/questions/1091372/getting-the-clients-time-zone-and-offset-in-javascript
+    event.detail.headers['timezone'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+});
+
+window.addEventListener("DOMContentLoaded", initFlowRunEditor); // initial load
+window.addEventListener("htmx:afterSettle", initFlowRunEditor); // htmx boosting
+
+window.addEventListener('htmx:responseError', evt => {
+    const xhr = evt.detail.xhr;
+    if (xhr.status == 422) {
+        const errorObj = JSON.parse(xhr.responseText);
+        const formErrors = errorObj.invalidArguments;
+        for (const formError of formErrors) {
+            const formFieldName = formError.path.replace("\$.", "")
+            const field = document.querySelector(`form [name="${formFieldName}"]`);
+
+            field.setCustomValidity(formError.reason);
+            field.addEventListener('focus', () => field.reportValidity());
+            field.addEventListener('change', () => field.setCustomValidity(''));
+            field.reportValidity();
+        }
+    } else {
+        // Handle the error some other way
+        console.error(xhr.responseText);
+    }
+});
+
+
+// set via Hx-Trigger
+document.body.addEventListener('clearScratchpad', (event) => {
+    localStorage.removeItem('scratchpad.program');
+});
+
+
+async function copyTextToClipboard(text, what, whereId) {
+    await navigator.clipboard.writeText(text);
+    Toastify({
+        text: `Copied ${what}!`,
+        gravity: "top",
+        position: "right",
+        style: {
+            background: "#258139"
+        },
+        duration: 3000,
+        selector: whereId // put inside a dialog so it shows above it!
+    }).showToast();
+}
+
+function initFlowRunEditor(event) {
+
+    // only trigger on full-page "reload",
+    // not on arbitrary HTMX response
+    if (event.type === "htmx:afterSettle" && event.detail.requestConfig.boosted !== true) return;
+
+    const mountElems = document.querySelectorAll(".flowrun-instance");
+    mountElems.forEach(mountElem => {
+        const flowrunMode = mountElem.dataset.flowrunmode;
+        if (flowrunMode === 'tutorial') {
+            initTutorial(mountElem);
+        } else if (flowrunMode === 'view-program') {
+            initViewProgram(mountElem);
+        } else if (flowrunMode === 'edit-program') {
+            initEditProgram(mountElem);
+        } else if (flowrunMode === 'scratchpad') {
+            initScratchpadEditor(mountElem);
+        }
+    });
+}
+
+function initTutorial(mountElem) {
+    loadEditor(mountElem, null);
+    const tutorialSolution = getMetaTagValue('_tutorial_solution');
+    const showTutSolutionBtn = document.getElementById('btn-show-solution');
+    showTutSolutionBtn.onclick = () => {
+        const htmlDecodedSolution = htmlDecode(tutorialSolution);
+        loadEditor(mountElem, htmlDecodedSolution);
+    };
+
+    function htmlDecode(input) {
+        const doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
+}
+
+function initViewProgram(mountElem) {
+    loadEditor(mountElem);
+}
+
+function initEditProgram(mountElem) {
+    let flowRunEditor = null;
+    let currentRevision = '';
+    flowRunEditor = loadEditor(mountElem, null, fre => {
+        flowRunEditor = fre;
+        currentRevision = flowRunEditor.revision();
+    });
+
+    // first load -> noop
+    let lastSavedProgramRevision = flowRunEditor.revision();
+    currentRevision = lastSavedProgramRevision;
+
+    const programSaveStatusElement = document.querySelector(".program-save-status");
+
+    // - periodically check and save the program
+    // - resilient if network goes down, no manual click needed
+    setInterval(async () => {
+        if (lastSavedProgramRevision != currentRevision) {
+            try {
+                await saveProgram(flowRunEditor);
+                lastSavedProgramRevision = currentRevision;
+                if (programSaveStatusElement)
+                    programSaveStatusElement.innerHTML = `<span title="Latest version is saved" data-tooltip="Latest version is saved" class="flex-centered"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z"/></svg></span>`;
+            } catch (err) {
+                console.error(err);
+                if (programSaveStatusElement)
+                    programSaveStatusElement.innerHTML = `<span title="Error while saving the program. Please reload the page!"  data-tooltip="Error while saving the program. Please reload the page!" class="flex-centered"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm0-160q17 0 28.5-11.5T520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>`;
+            }
+        }
+    }, 1000);
+
+    addEventListener("beforeunload", async () => {
+        // force saving before leaving the page
+        // https://stackoverflow.com/a/67644011/4496364
+        if (lastSavedProgramRevision != currentRevision) {
+            await saveProgram(flowRunEditor);
+        }
+    });
+
+    async function saveProgram(flowRunEditor) {
+        const programId = getMetaTagValue('_program_id');
+        const csrfToken = getMetaTagValue('_csrf');
+        let saveUrl = mountElem.dataset.programsaveurl || `/programs/${programId}`;
+        await fetch(saveUrl, {
+            method: 'PUT',
+            headers: { 'X-CSRF-TOKEN': [csrfToken] },
+            body: JSON.stringify({
+                name: flowRunEditor.name(),
+                json: flowRunEditor.json()
+            }),
+            keepalive: true
+        });
+    }
+}
+
+function initScratchpadEditor(mountElem) {
+    const scratchpadProgram = localStorage.getItem('scratchpad.program');
+    const editor = loadEditor(mountElem, scratchpadProgram, async function onProgramChange(flowRunEditor) {
+        localStorage.setItem('scratchpad.program', flowRunEditor.json());
+    });
+    // set editor as global, accessible by HTMX..
+    window.scratchpadFlowRunEditor = editor;
+}
+
+function loadEditor(mountElem, json, changeCB) {
+    // if (!json && !mountElem.textContent.trim().startsWith('{')) return;
+    console.debug("Mounting with JSON: " + json);
+    let theme = FlowRunThemeObj.default.withFontName("Fira Mono");
+    if (typeof getCustomTheme !== 'undefined') {
+        theme = getCustomTheme();
+    }
+    const mountCB = () => {
+        mountElem.classList.remove("flowrun--hidden");
+    }
+    return FlowRunEditor(mountElem, theme, json, mountCB, changeCB);
+}
+
+function getMetaTagValue(name) {
+    let elem = document.getElementById(name);
+    if (elem) return elem.getAttribute('content');
+    else return null;
+}
